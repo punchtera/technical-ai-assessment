@@ -1,0 +1,28 @@
+================================================================================
+[2026-10-24T19:43:12Z] PROMPT #1
+--------------------------------------------------------------------------------
+Prompt:
+I need to start a project to do "Design and build an AI-first Feature
+Intelligence System that helps a product team turn unstructured feature requests
+into clear, actionable product decisions." I want to create this in a series of
+steps to have a clear log of all the steps performed. I'm a software developer
+experienced with TypeScript, React and Node.js, so those are the languages for
+this product. First start a git repo in this folder, then create a CLAUDE.md
+file as the first requirement, noting that we are running on Claude Cowork.
+Checkout to the dev branch before committing (Gitflow). The CLAUDE.md must
+contain:
+  # Project Rules
+  ## Prompt Logging
+  Every time you receive a new instruction or prompt, append it to prompts.txt
+  in the project root with a timestamp (ISO 8601) and a brief summary of what
+  you did in response. Create the file if it doesn't exist. Keep this log
+  updated throughout all sessions.
+
+Summary of actions:
+- Initialized a git repository with `main` as the default branch and an empty
+  initial commit so `main` exists for Gitflow.
+- Created and checked out the `dev` branch.
+- Created CLAUDE.md with the Claude Cowork environment note, project/stack
+  overview (TypeScript, React, Node.js, Gitflow) and the Prompt Logging rule.
+- Created prompts.txt and logged this prompt.
+- Committed CLAUDE.md and prompts.txt on `dev`.
