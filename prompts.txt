@@ -39,3 +39,21 @@ Summary of actions:
   CLAUDE.md with project rules and prompt log") onto it as 74ebe58, so main
   starts with CLAUDE.md and prompts.txt.
 - Switched back to `dev` and logged this prompt in prompts.txt.
+
+================================================================================
+[2026-10-24T19:54:09Z] PROMPT #3
+--------------------------------------------------------------------------------
+Prompt:
+Add the assessment's "Core Requirements" (submit, view/discover, support, and
+understand grouping/evaluation/prioritization of feature requests; free to
+extend traditional voting) and "AI First Solution" (pick a high-value point in
+the feature-request lifecycle, design an AI solution around it, be ready to
+explain problem, beneficiaries, why AI, workflow change, chosen architecture,
+human judgment, impact measurement, assumptions/risks/tradeoffs, and include
+2-3 success metrics) to the project context.
+
+Summary of actions:
+- Added an "Assessment Requirements" section to CLAUDE.md with both
+  subsections ("Core Requirements" and "AI First Solution") verbatim, placed
+  between the Project overview and Project Rules.
+- Logged this prompt in prompts.txt and committed on `dev`.
