@@ -26,3 +26,16 @@ Summary of actions:
   overview (TypeScript, React, Node.js, Gitflow) and the Prompt Logging rule.
 - Created prompts.txt and logged this prompt.
 - Committed CLAUDE.md and prompts.txt on `dev`.
+
+================================================================================
+[2026-10-24T19:44:42Z] PROMPT #2
+--------------------------------------------------------------------------------
+Prompt:
+Also do a cherry-pick of the first dev commit on main of this file to make sure
+it's the first starting point of the project.
+
+Summary of actions:
+- Checked out `main` and cherry-picked dev commit e3135fe ("docs: add
+  CLAUDE.md with project rules and prompt log") onto it as 74ebe58, so main
+  starts with CLAUDE.md and prompts.txt.
+- Switched back to `dev` and logged this prompt in prompts.txt.
