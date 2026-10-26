@@ -28,3 +28,4 @@ test-results/
 .vscode/*
 !.vscode/extensions.json
 *.log
+node_modules
