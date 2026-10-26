@@ -300,3 +300,16 @@ Prompt:
 Summary of actions:
 - Committed all current working-tree changes (steps 2 and 3 of the implementation prompt, the
   product design doc and the prompt log) to dev in one commit after a secret scan. Not pushed.
+
+================================================================================
+[2026-10-26T13:55:00Z] PROMPT #14
+--------------------------------------------------------------------------------
+Prompt:
+"add this remote git remote add origin git@github.com:punchtera/technical-ai-assessment.git,
+push the current repo and then create a pr from dev into main to release everythin"
+
+Summary of actions:
+- Added the origin remote.
+- Push failed: the linked shell has no access to the user's SSH keys ("Host key verification
+  failed"), and Claude's GitHub connection has no push access to punchtera/technical-ai-assessment.
+- Gave the user the push and PR commands to run from their own terminal.
