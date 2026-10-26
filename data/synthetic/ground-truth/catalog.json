@@ -1,0 +1,1298 @@
+{
+  "schemaVersion": 1,
+  "notice": "SYNTHETIC DATA. Every request below was written for evaluation purposes and describes a fictional product (Tasklane). None of it is real customer feedback. Email addresses use reserved example domains and phone numbers use the fictional 555-01xx range.",
+  "product": {
+    "name": "Tasklane",
+    "description": "Fictional B2B work-management SaaS for agencies and service firms: projects, tasks, time tracking, client invoicing and reporting."
+  },
+  "groups": [
+    {
+      "key": "invoice-accounting-sync",
+      "family": "export",
+      "need": "Finance staff need invoice data to reach their accounting system without manual re-entry or reconciliation.",
+      "requests": [
+        {
+          "title": "Sync invoices with our accounting system",
+          "description": "Every month our bookkeeper re-types every invoice from Tasklane into Xero. It takes her two days and there are always typos in the amounts.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "QuickBooks export",
+          "description": "need a quickbooks export button for invoices pls",
+          "tags": ["terse", "solution_shaped"]
+        },
+        {
+          "title": "Invoices -> accounting",
+          "description": "We close the books on the 5th of each month and the invoice data has to land in our ledger. Right now it's copy-paste. Can invoices flow over automatically, including tax lines?",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "CSV download of invoices for our accountant",
+          "description": "Our external accountant asks for a file with all invoices, client, amount, VAT and due date each quarter. Building it by hand from the invoice screen is painful.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Double entry of billing data",
+          "description": "Finance complains that billing information lives in two places and they reconcile them manually. We would love one source of truth that pushes into the general ledger.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "Export invoices to accounting software",
+          "description": "Please add a way to export invoices to accounting software.",
+          "tags": ["near_duplicate", "terse"]
+        },
+        {
+          "title": "Integration with Xero for invoices",
+          "description": "When an invoice is marked as sent it should appear in Xero with the right customer and line items, so we stop reconciling at month end.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Month-end reconciliation takes forever",
+          "description": "I'm the controller at a 40-person agency. Matching Tasklane invoices against what we booked in the ledger is the slowest part of month-end close. Reach me at controller@example.com if you want details.",
+          "tags": ["problem_framed", "contains_synthetic_pii"]
+        },
+        {
+          "title": "exporting billing",
+          "description": "Is there any way to get invoice lines out of the app and into the finance tools? The export should keep the project code too.",
+          "tags": ["paraphrase"]
+        }
+      ]
+    },
+    {
+      "key": "admin-audit-trail",
+      "family": "export",
+      "need": "Admins and compliance teams need a reliable record of who changed what (permissions, deletions, logins) to answer audits and investigations.",
+      "requests": [
+        {
+          "title": "Audit trail of changes",
+          "description": "Our SOC 2 auditor asked who changed user permissions and when. We couldn't answer because Tasklane doesn't show a history of admin actions.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Export the activity log",
+          "description": "Need to download the full activity log (user, action, timestamp) as a file so compliance can archive it every quarter.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Who deleted this project?",
+          "description": "A whole project vanished last week and nobody knows who removed it. We need a record of admin and destructive actions we can hand to security.",
+          "tags": ["problem_framed"],
+          "alsoAcceptable": ["recover-deleted-items"]
+        },
+        {
+          "title": "Compliance evidence export",
+          "description": "For ISO 27001 we must show evidence of access reviews. A downloadable log of role changes and logins would cover it.",
+          "tags": ["paraphrase"]
+        }
+      ]
+    },
+    {
+      "key": "scheduled-report-delivery",
+      "family": "export",
+      "need": "Managers and executives want recurring reports delivered to them automatically, without logging in or assembling them by hand.",
+      "requests": [
+        {
+          "title": "Email me the weekly utilization report",
+          "description": "Every Monday I log in just to screenshot the utilization report for the leadership meeting. Could it just arrive in my inbox?",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Scheduled reports",
+          "description": "Let us schedule any saved report to be sent automatically (daily, weekly or monthly) to a list of recipients.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Reports for people without a login",
+          "description": "Our CEO doesn't have a Tasklane seat but wants the project profitability numbers every Friday. Right now I export a PDF and email it manually.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "recurring report delivery",
+          "description": "auto send report every month to the finance alias",
+          "tags": ["terse"]
+        },
+        {
+          "title": "Monday morning numbers",
+          "description": "Directors keep asking me for the same hours-by-client figures each week. I'd love it if the system delivered them on a schedule so I don't have to remember.",
+          "tags": ["problem_framed"]
+        }
+      ]
+    },
+    {
+      "key": "notification-volume-digest",
+      "family": "notifications",
+      "need": "Users receive so many individual notifications that they ignore them; they need fewer, consolidated updates.",
+      "requests": [
+        {
+          "title": "Too many notification emails",
+          "description": "I get an email for every comment, status change and assignment. That's 150+ a day and I've started ignoring all of them, including the important ones.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Daily digest instead of individual emails",
+          "description": "Please offer a once-a-day summary email that bundles all updates.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Notification overload",
+          "description": "My inbox is flooded by Tasklane. I need fewer, more meaningful alerts.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "Batch notifications",
+          "description": "Could notifications be grouped, e.g. one message per task per hour instead of one per change?",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "I muted Tasklane emails entirely",
+          "description": "The volume got so high that I set up a filter to archive all Tasklane mail. Now I miss deadlines. Something between everything and nothing would help.",
+          "tags": ["problem_framed"]
+        },
+        {
+          "title": "Summarize what happened on my projects",
+          "description": "At the end of the day I'd like a single recap of what changed across my projects, rather than a stream of pings during the day.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "notifications",
+          "description": "too much noise",
+          "tags": ["terse", "ambiguous"],
+          "alsoAcceptable": ["quiet-hours"]
+        },
+        {
+          "title": "Weekly summary email",
+          "description": "A weekly roll-up of activity on the projects I follow would replace the dozens of separate emails I get.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Spammy emails from comments",
+          "description": "Every reply in a busy comment thread sends me another email. Please collapse these.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "Email notifications are too frequent",
+          "description": "Email notifications are way too frequent, I get hundreds per day.",
+          "tags": ["near_duplicate"]
+        }
+      ]
+    },
+    {
+      "key": "mention-push-alerts",
+      "family": "notifications",
+      "need": "People away from their desk need to learn immediately when someone mentions or needs them.",
+      "requests": [
+        {
+          "title": "Push notification when someone mentions me",
+          "description": "When a client @mentions me on a task I only see it hours later at my desk. I'm often on site and need to know right away on my phone.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Instant alerts on mobile",
+          "description": "The mobile app should buzz immediately for direct mentions and assignments, not just show a badge the next time I open it.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Missed urgent mention",
+          "description": "A client asked me something urgent in a comment and I didn't see it until the next morning because I was away from my laptop. We lost the deal.",
+          "tags": ["problem_framed"]
+        },
+        {
+          "title": "Real-time mobile notifications for @mentions",
+          "description": "Please send real-time push notifications for @mentions to the iOS and Android apps.",
+          "tags": ["near_duplicate"]
+        },
+        {
+          "title": "Need to be reachable when travelling",
+          "description": "I travel a lot. If a teammate needs me on a task I'd like my phone to alert me straight away.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "phone alerts",
+          "description": "get notified on phone when tagged in comment",
+          "tags": ["terse"]
+        }
+      ]
+    },
+    {
+      "key": "quiet-hours",
+      "family": "notifications",
+      "need": "People in distributed teams need protection from notifications outside their own working hours.",
+      "requests": [
+        {
+          "title": "Don't notify me outside working hours",
+          "description": "Our team spans Bogotá and Berlin. People get pinged at 11pm by colleagues in other time zones. We need do-not-disturb hours per person.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Do not disturb schedule",
+          "description": "Let me set hours when no push or email notifications are sent, and queue them until the morning.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Weekend pings",
+          "description": "My phone keeps lighting up on Saturdays because someone updates a task. I want notifications to wait until Monday.",
+          "tags": ["paraphrase"]
+        }
+      ]
+    },
+    {
+      "key": "single-sign-on",
+      "family": "auth",
+      "need": "IT needs Tasklane sign-in and access removal to be controlled centrally through the company identity provider.",
+      "requests": [
+        {
+          "title": "Single sign-on with our identity provider",
+          "description": "We manage all staff accounts in Okta. Having separate Tasklane passwords means that when someone leaves, IT forgets to remove them and they keep access.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "SAML SSO",
+          "description": "Support SAML 2.0 SSO please.",
+          "tags": ["terse", "solution_shaped"]
+        },
+        {
+          "title": "Login with Google Workspace",
+          "description": "Everyone in our company already signs into everything with their Google Workspace account. Another password is friction and a security risk.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Offboarding is manual",
+          "description": "When contractors finish, someone has to remember to deactivate them in Tasklane. Twice we found ex-contractors still logged in weeks later. Call me on +1 555 0142 if useful.",
+          "tags": ["problem_framed", "contains_synthetic_pii"]
+        },
+        {
+          "title": "Azure AD / Entra login",
+          "description": "Our security policy requires all SaaS tools to authenticate through Microsoft Entra ID. Without that we can't roll Tasklane out to the whole company.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Central user management",
+          "description": "IT wants to control who can sign in to Tasklane from the same place they control every other app.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "SSO is a blocker for procurement",
+          "description": "Our procurement checklist has 'supports SSO' as a hard requirement. Legal will not sign the renewal without it.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "Sign in with company account",
+          "description": "Can we sign in with our company account instead of a separate password?",
+          "tags": ["near_duplicate"]
+        },
+        {
+          "title": "Automatic provisioning",
+          "description": "New hires should get Tasklane access automatically when they're added to the Delivery group in our directory, and lose it when they're removed.",
+          "tags": ["paraphrase"]
+        }
+      ]
+    },
+    {
+      "key": "two-factor-authentication",
+      "family": "auth",
+      "need": "Account owners need a second factor so that a stolen password alone cannot grant access.",
+      "requests": [
+        {
+          "title": "Two-factor authentication",
+          "description": "A colleague's password was leaked in another site's breach and someone logged into her Tasklane account. We need a second factor on login.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Authenticator app support",
+          "description": "Please support TOTP codes from Google Authenticator or 1Password at login.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Enforce 2FA for all admins",
+          "description": "As the workspace owner I want to require that every admin has 2FA turned on.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Account takeover worry",
+          "description": "We store client rates and contracts here. A stolen password alone shouldn't be enough to get in.",
+          "tags": ["problem_framed"]
+        },
+        {
+          "title": "security keys",
+          "description": "would be great to log in with a YubiKey",
+          "tags": ["terse", "solution_shaped"]
+        }
+      ]
+    },
+    {
+      "key": "session-timeout",
+      "family": "auth",
+      "need": "Admins need sessions on shared or unattended computers to expire automatically.",
+      "requests": [
+        {
+          "title": "Automatic logout on shared computers",
+          "description": "Our designers share workstations in the studio. People stay logged in for days, so anyone at the desk can act as them. Admins need to set a session timeout.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Idle session expiry",
+          "description": "Sessions should expire after a configurable period of inactivity, for compliance reasons.",
+          "tags": ["solution_shaped"]
+        }
+      ]
+    },
+    {
+      "key": "runaway-timer-safeguard",
+      "family": "time",
+      "need": "Time entries become wrong when people forget to stop timers; they need safeguards against runaway or idle time.",
+      "requests": [
+        {
+          "title": "Reminder when my timer has been running too long",
+          "description": "I regularly forget to stop the timer when I leave, and find 14-hour entries the next day. Then I have to guess what I actually worked.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Idle detection",
+          "description": "Detect when I've been away from the computer and ask whether to keep or discard the idle time.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Inaccurate timesheets",
+          "description": "Half of my team's timesheets have entries that are obviously wrong because timers were left running over lunch or overnight. It makes billing clients awkward.",
+          "tags": ["problem_framed"],
+          "alsoAcceptable": ["timesheet-approval"]
+        },
+        {
+          "title": "Auto-stop timer at end of day",
+          "description": "Stop running timers automatically at a set time, like 7pm, and notify the person.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Forgot to stop timer",
+          "description": "I keep forgetting to stop the timer. Please remind me.",
+          "tags": ["near_duplicate", "terse"]
+        },
+        {
+          "title": "timer ran all weekend",
+          "description": "left the timer on friday, came back monday to 60 hrs logged lol. some warning would be nice",
+          "tags": ["terse"]
+        },
+        {
+          "title": "Prompt when switching away",
+          "description": "If I lock my laptop with a timer running, ask me when I come back whether that time should count.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "Overbilling risk",
+          "description": "We nearly sent a client an invoice with 30 hours that were just a forgotten timer. Some safeguard against runaway timers is needed.",
+          "tags": ["problem_framed"]
+        }
+      ]
+    },
+    {
+      "key": "offline-mobile-time",
+      "family": "time",
+      "need": "Field workers need to record time on mobile without connectivity and have it sync later.",
+      "requests": [
+        {
+          "title": "Track time without internet on mobile",
+          "description": "Our technicians work in basements and rural sites with no signal. The mobile app won't start a timer offline, so they write hours on paper.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Offline mode for the app",
+          "description": "Let the mobile app work offline and sync when the connection comes back.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Lost time entries in the field",
+          "description": "Entries created on the train disappear when the connection drops. We need them stored locally until they can upload.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "Construction sites have no coverage",
+          "description": "I log hours on job sites where there's no 4G. Right now I re-enter everything at night from memory.",
+          "tags": ["problem_framed"]
+        },
+        {
+          "title": "Sin conexión",
+          "description": "Necesitamos registrar horas en la app móvil cuando no hay internet y que se sincronicen después.",
+          "tags": ["non_english", "paraphrase"]
+        }
+      ]
+    },
+    {
+      "key": "timesheet-approval",
+      "family": "time",
+      "need": "Managers need to review and approve logged hours before they are billed.",
+      "requests": [
+        {
+          "title": "Manager approval of timesheets",
+          "description": "Before we invoice, a project lead has to check that hours are reasonable. Today we do it over email with exported spreadsheets.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Approve/reject timesheets workflow",
+          "description": "Add a submit, approve or reject flow for weekly timesheets, with comments when something is rejected.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Lock approved hours",
+          "description": "Once hours are approved for billing nobody should be able to edit them silently.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "Unchecked hours end up on invoices",
+          "description": "Junior staff sometimes log time to the wrong project and it goes straight onto the client invoice. We need a review step.",
+          "tags": ["problem_framed"]
+        },
+        {
+          "title": "weekly timesheet sign-off",
+          "description": "PMs need to sign off weekly hours",
+          "tags": ["terse"]
+        },
+        {
+          "title": "Timesheet review before billing",
+          "description": "Hours should be reviewed and confirmed by a manager before they can be billed.",
+          "tags": ["paraphrase"]
+        }
+      ]
+    },
+    {
+      "key": "bulk-edit-tasks",
+      "family": "bulk",
+      "need": "Users need to apply the same change to many existing tasks at once instead of editing them one by one.",
+      "requests": [
+        {
+          "title": "Change many tasks at once",
+          "description": "When a team member goes on leave I have to reassign 60 tasks one by one. Selecting several tasks and changing the assignee in one go would save me an hour.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Bulk edit",
+          "description": "multi-select tasks + bulk change due date/status/assignee",
+          "tags": ["terse", "solution_shaped"]
+        },
+        {
+          "title": "Shift all deadlines by a week",
+          "description": "Our client pushed the launch by a week. I had to open every task to move its due date. Please let me move a set of tasks together.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "Mass update task status",
+          "description": "At the end of a sprint I close 30 tasks individually. A way to update them all at once would help.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "Bulk actions in list view",
+          "description": "Add checkboxes in the list view so I can apply the same change to many rows.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Editing tasks one by one is tedious",
+          "description": "Editing tasks one by one is really tedious when I need to change lots of them.",
+          "tags": ["near_duplicate"]
+        },
+        {
+          "title": "Re-tag a batch of tasks",
+          "description": "We renamed our labels and now I need to apply the new label to about 200 existing tasks.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "Bulk move tasks between projects",
+          "description": "We split one project into two; moving the tasks across individually took all afternoon.",
+          "tags": ["paraphrase"]
+        }
+      ]
+    },
+    {
+      "key": "import-tasks-from-files",
+      "family": "bulk",
+      "need": "Teams migrating to Tasklane need to bring existing work in from spreadsheets or other tools.",
+      "requests": [
+        {
+          "title": "Import tasks from a spreadsheet",
+          "description": "We're migrating from spreadsheets. We have 900 tasks in Excel with owners and due dates and no way to bring them in except typing.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "CSV import",
+          "description": "Let me upload a CSV and map its columns to task fields.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Migrating from another tool",
+          "description": "We're moving from a competitor and need our existing projects and tasks to come with us, otherwise the switch is a non-starter.",
+          "tags": ["problem_framed"]
+        },
+        {
+          "title": "Onboarding a new client with a task list",
+          "description": "Clients send us their requirement lists in Excel. Converting each row into a task manually wastes the first day of every engagement.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "Bulk create tasks",
+          "description": "Please let us create lots of tasks at once from a file.",
+          "tags": ["hard_wording"]
+        },
+        {
+          "title": "import from trello",
+          "description": "is there an importer for trello boards?",
+          "tags": ["terse", "solution_shaped"]
+        }
+      ]
+    },
+    {
+      "key": "dark-mode",
+      "family": "ui",
+      "need": "Users working in low light want a dark appearance that is comfortable for their eyes.",
+      "requests": [
+        {
+          "title": "Dark mode",
+          "description": "I work late in the evening and the bright white interface gives me headaches. A dark theme would make it much more comfortable.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Dark theme please",
+          "description": "Please add a dark theme.",
+          "tags": ["near_duplicate", "terse"]
+        },
+        {
+          "title": "Too bright at night",
+          "description": "Using Tasklane after sunset is like staring into a lamp. Everything else on my machine is dark already.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "Follow OS appearance setting",
+          "description": "The app should switch to a dark appearance automatically when my operating system is in dark mode.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Eye strain from white background",
+          "description": "Long sprint-planning sessions leave my eyes tired; the white background is harsh.",
+          "tags": ["problem_framed"]
+        },
+        {
+          "title": "Night mode",
+          "description": "night mode for the web app would be awesome",
+          "tags": ["terse"]
+        },
+        {
+          "title": "Dark UI on mobile",
+          "description": "The mobile app blinds me when I check tasks in bed. Dark colours please.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "Darker color scheme option",
+          "description": "Could you offer a darker colour scheme? Our developers all prefer dark UIs and it's their number one complaint.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Theme options",
+          "description": "Would like to customize the look of the app, at least light and dark.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Dark mode",
+          "description": "+1 for dark mode. My whole team asked for it.",
+          "tags": ["near_duplicate"]
+        }
+      ]
+    },
+    {
+      "key": "low-vision-accessibility",
+      "family": "ui",
+      "need": "Users with low vision need sufficient contrast, scalable text and zoom support to read and use the app.",
+      "requests": [
+        {
+          "title": "Text and buttons are hard to read for low-vision users",
+          "description": "One of our account managers has low vision. The light grey text on white fails contrast guidelines and she struggles to read task details.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "High contrast mode",
+          "description": "Please add a high-contrast theme that meets WCAG AA contrast ratios.",
+          "tags": ["solution_shaped", "hard_wording"]
+        },
+        {
+          "title": "Accessibility compliance for public sector tender",
+          "description": "We're bidding for a government contract that requires our tools to meet WCAG 2.1 AA. Contrast and zoom support are where Tasklane fails today.",
+          "tags": ["problem_framed"]
+        },
+        {
+          "title": "Layout breaks when zooming to 200%",
+          "description": "Our colleague uses browser zoom at 200% and the task panel overlaps and becomes unusable.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "Larger font option",
+          "description": "Allow users to increase the font size across the app without breaking the layout; some of us have poor eyesight.",
+          "tags": ["solution_shaped"]
+        }
+      ]
+    },
+    {
+      "key": "keyboard-power-user",
+      "family": "ui",
+      "need": "Heavy daily users want to work faster without the mouse.",
+      "requests": [
+        {
+          "title": "Keyboard shortcuts for common actions",
+          "description": "I live in Tasklane all day. Reaching for the mouse to create a task, assign it and set a due date slows me down. Shortcuts would make me much faster.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Command palette",
+          "description": "A Cmd+K command palette to jump to projects and run actions would be great for power users.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Vim-style navigation",
+          "description": "j/k to move through the task list, x to complete. Please!",
+          "tags": ["terse", "solution_shaped"]
+        }
+      ]
+    },
+    {
+      "key": "interface-localization",
+      "family": "ui",
+      "need": "Staff who are not fluent in English need the interface in their own language.",
+      "requests": [
+        {
+          "title": "Interface in Spanish",
+          "description": "Half our staff are more comfortable in Spanish. The interface is English-only, which slows adoption among our field teams.",
+          "tags": ["canonical"]
+        }
+      ]
+    },
+    {
+      "key": "recurring-tasks",
+      "family": "reuse",
+      "need": "Work that happens on a regular schedule should reappear automatically so it is not forgotten.",
+      "requests": [
+        {
+          "title": "Recurring tasks",
+          "description": "Every month we have to send each client a status report. I recreate the same tasks manually every month and sometimes forget.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Repeat task every week",
+          "description": "Let me set a task to repeat weekly, monthly or every N days.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Routine maintenance tasks",
+          "description": "Our ops team has checks that happen every Monday (backups, licence renewals). They should reappear automatically.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "Forgot the quarterly tax filing task",
+          "description": "Because the quarterly filing task isn't automatic we missed it last quarter and paid a penalty.",
+          "tags": ["problem_framed"]
+        },
+        {
+          "title": "repeating todos",
+          "description": "repeating todos like other apps have",
+          "tags": ["terse"]
+        },
+        {
+          "title": "Auto-create next occurrence when completed",
+          "description": "When I complete a repeating task, the next one should be created with the due date moved forward.",
+          "tags": ["solution_shaped"]
+        }
+      ]
+    },
+    {
+      "key": "project-templates",
+      "family": "reuse",
+      "need": "Teams want to start new projects from a standard, reusable structure instead of rebuilding or copying old ones.",
+      "requests": [
+        {
+          "title": "Project templates",
+          "description": "Every new website project has the same 45 tasks in the same phases. We copy an old project and then clean it up, which takes ages and leaks old client names.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Save a project as a template",
+          "description": "Allow saving an existing project structure (phases, tasks, assignee roles) as a reusable template.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Standardize how we kick off engagements",
+          "description": "Each PM sets up projects differently, so reporting is inconsistent. We want a standard starting structure for each service we sell.",
+          "tags": ["problem_framed"]
+        },
+        {
+          "title": "Duplicate project without the data",
+          "description": "When I duplicate a project it copies comments and time entries too. I only want the task skeleton.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "Onboarding checklist template",
+          "description": "New employee onboarding is the same checklist every time; I want to spin it up with one click.",
+          "tags": ["paraphrase", "hard_wording"]
+        }
+      ]
+    },
+    {
+      "key": "task-dependencies",
+      "family": "scheduling",
+      "need": "Teams need to express that work depends on other work, so ordering is respected and the impact of delays is visible.",
+      "requests": [
+        {
+          "title": "Task dependencies",
+          "description": "Design has to finish before development starts, but nothing in Tasklane stops people from starting early or shows that a delay will push everything back.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Blocked by / blocking",
+          "description": "Add 'blocked by' and 'blocks' links between tasks.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "See what a delay affects",
+          "description": "When a task slips I want to know which downstream tasks and deadlines are impacted.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "Prevent starting tasks too early",
+          "description": "QA keeps picking up items before dev marks them done. Something should signal that a task is waiting on another.",
+          "tags": ["problem_framed"]
+        },
+        {
+          "title": "Finish-to-start relationships",
+          "description": "For construction scheduling we need finish-to-start links with lag days.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Link tasks so due dates shift together",
+          "description": "If I move the date of a task, tasks that depend on it should move too.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "dependencies",
+          "description": "need task dependencies like in ms project",
+          "tags": ["terse"]
+        }
+      ]
+    },
+    {
+      "key": "timeline-view",
+      "family": "scheduling",
+      "need": "Planners need to see and communicate a project schedule laid out over time.",
+      "requests": [
+        {
+          "title": "Timeline view of the project",
+          "description": "Clients ask what the plan looks like over the next three months. I end up drawing it in PowerPoint because Tasklane only shows lists and boards.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Gantt chart",
+          "description": "Please add a Gantt chart.",
+          "tags": ["terse", "solution_shaped"]
+        },
+        {
+          "title": "Visual roadmap for stakeholders",
+          "description": "Leadership wants to see all projects laid out on a horizontal, calendar-like view to spot overlaps.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "Drag tasks along a timeline",
+          "description": "I'd like to plan by dragging bars on a timeline rather than editing dates in a form.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Hard to communicate schedule",
+          "description": "It's difficult to show a client how phases fit together over time using the current views.",
+          "tags": ["problem_framed"]
+        },
+        {
+          "title": "Calendar view of deadlines",
+          "description": "A month view showing which tasks are due on which day would help me see crunch weeks.",
+          "tags": ["ambiguous"],
+          "alsoAcceptable": ["calendar-sync"]
+        }
+      ]
+    },
+    {
+      "key": "multi-currency-invoicing",
+      "family": "billing",
+      "need": "Firms with international clients need to bill each client in that client's currency.",
+      "requests": [
+        {
+          "title": "Invoice clients in their own currency",
+          "description": "We're a Colombian agency with US and EU clients. Invoices only come out in COP, so we convert by hand and clients complain about the totals.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Multi-currency support",
+          "description": "Support USD, EUR and GBP on invoices with an exchange rate per invoice.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Rates in euros for one client",
+          "description": "One client contract is in euros. I need that client's rates and invoices in EUR while the others stay in dollars.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "Currency per project",
+          "description": "set currency per project/client",
+          "tags": ["terse"]
+        }
+      ]
+    },
+    {
+      "key": "online-invoice-payment",
+      "family": "billing",
+      "need": "Firms want clients to be able to pay invoices online so that money arrives sooner and with less manual work.",
+      "requests": [
+        {
+          "title": "Let clients pay invoices online",
+          "description": "Clients receive a PDF and then pay by bank transfer weeks later. If they could pay by card from a link in the invoice we'd get paid much faster.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Stripe integration for invoices",
+          "description": "Add a 'Pay now' button on invoices powered by Stripe.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Cash flow is suffering",
+          "description": "Our average days-to-payment is over 45. A smoother way for clients to settle invoices would directly help cash flow.",
+          "tags": ["problem_framed"]
+        },
+        {
+          "title": "Accept card payments",
+          "description": "Please accept credit card payments on invoices.",
+          "tags": ["near_duplicate", "terse"]
+        },
+        {
+          "title": "Payment link in invoice email",
+          "description": "Include a secure payment link in the invoice email so the client can pay in two clicks.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "PayPal",
+          "description": "some of our freelance clients only use paypal, can invoices be paid there?",
+          "tags": ["terse"]
+        },
+        {
+          "title": "Mark invoices paid automatically",
+          "description": "When a client pays, the invoice should flip to 'paid' by itself instead of us checking the bank and updating it.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "Faster payments from clients",
+          "description": "We want clients to pay us faster; the current bank-transfer flow is slow.",
+          "tags": ["ambiguous"],
+          "alsoAcceptable": ["overdue-invoice-reminders"]
+        }
+      ]
+    },
+    {
+      "key": "overdue-invoice-reminders",
+      "family": "billing",
+      "need": "Firms need overdue invoices to be followed up reliably without staff writing chasing emails.",
+      "requests": [
+        {
+          "title": "Automatic reminders for overdue invoices",
+          "description": "Chasing late payers is awkward and I often forget. The system should email clients a polite reminder when an invoice is 7 days overdue.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Dunning emails",
+          "description": "Configurable reminder sequence: before the due date, on the due date, and 7 and 14 days after.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Late payments slip through",
+          "description": "Two invoices went unpaid for three months because nobody noticed they were overdue.",
+          "tags": ["problem_framed"]
+        },
+        {
+          "title": "Nudge clients about unpaid invoices",
+          "description": "A way to nudge clients about unpaid invoices without writing the emails myself.",
+          "tags": ["paraphrase"]
+        }
+      ]
+    },
+    {
+      "key": "client-guest-access",
+      "family": "permissions",
+      "need": "Firms want clients and outside collaborators to see the progress of their own work without full seats or access to other clients.",
+      "requests": [
+        {
+          "title": "Give clients view-only access",
+          "description": "Clients email us weekly asking for status. If they could log in and see progress on their own project, without seeing other clients, we'd save a lot of back-and-forth. Our client contact maria.lopez@example.org asks every Friday.",
+          "tags": ["canonical", "contains_synthetic_pii"]
+        },
+        {
+          "title": "Guest users",
+          "description": "Free guest accounts with limited permissions for external collaborators.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Client portal",
+          "description": "A simple client portal where customers see milestones and can approve deliverables.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Share a project with someone outside the company",
+          "description": "I want to share one project with a freelancer without paying for a full seat or exposing the rest of the workspace.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "Status update requests from clients",
+          "description": "Our PMs spend hours writing status emails to clients that just restate what's already in Tasklane.",
+          "tags": ["problem_framed"]
+        },
+        {
+          "title": "read only link",
+          "description": "public read only link to a project board?",
+          "tags": ["terse"]
+        }
+      ]
+    },
+    {
+      "key": "financial-field-privacy",
+      "family": "permissions",
+      "need": "Confidential financial information (rates, costs, budgets) must be visible only to authorised roles.",
+      "requests": [
+        {
+          "title": "Hide billing rates from regular members",
+          "description": "Everyone can see hourly rates and project budgets, including contractors. Rates are confidential and should be visible to finance and managers only.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Permission to view financial fields",
+          "description": "Add a permission that controls who can see cost rates, bill rates and invoice amounts.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Contractor saw everyone's rates",
+          "description": "A contractor exported a report that showed the internal cost rates of all staff. That was a serious problem for us.",
+          "tags": ["problem_framed"]
+        }
+      ]
+    },
+    {
+      "key": "chat-integration",
+      "family": "integrations",
+      "need": "Teams that coordinate in a chat tool need work requests and task updates to move between chat and Tasklane.",
+      "requests": [
+        {
+          "title": "Slack integration",
+          "description": "Our team discusses everything in Slack and decisions get lost. We want to turn a Slack message into a task and see task updates posted in the project channel.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Create task from Slack message",
+          "description": "A message shortcut in Slack, 'Create Tasklane task', with the message text as the description.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Post updates to a channel",
+          "description": "When tasks in a project are completed, post a message to the linked Slack channel.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Microsoft Teams integration",
+          "description": "We use Teams, not Slack. Same idea: create tasks from chat and get updates in our team channel.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "Requests get lost in chat",
+          "description": "Clients and colleagues ask for things in chat and half of it never becomes a task.",
+          "tags": ["problem_framed"]
+        },
+        { "title": "slack", "description": "slack app pls", "tags": ["terse"] },
+        {
+          "title": "Slack notifications instead of email",
+          "description": "I'd rather get my Tasklane notifications as Slack DMs than as emails.",
+          "tags": ["ambiguous"],
+          "alsoAcceptable": ["notification-volume-digest"]
+        },
+        {
+          "title": "Link Slack threads to tasks",
+          "description": "Attach the Slack thread where we discussed a task so the context isn't lost.",
+          "tags": ["paraphrase"]
+        }
+      ]
+    },
+    {
+      "key": "calendar-sync",
+      "family": "integrations",
+      "need": "People who plan their week in an external calendar need task deadlines to appear there.",
+      "requests": [
+        {
+          "title": "Sync due dates with Google Calendar",
+          "description": "I plan my week in Google Calendar. Tasks with due dates should show up there automatically so I can block time.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Outlook calendar sync",
+          "description": "Two-way sync between task due dates and the Outlook calendar.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "iCal feed",
+          "description": "Provide an iCal subscription URL for my assigned tasks.",
+          "tags": ["solution_shaped", "terse"]
+        },
+        {
+          "title": "Deadlines aren't visible in my calendar",
+          "description": "I double-book myself because my deadlines live in Tasklane and my meetings live in my calendar.",
+          "tags": ["problem_framed"]
+        },
+        {
+          "title": "Block focus time for tasks",
+          "description": "Let me drag a task into my calendar to reserve time to work on it.",
+          "tags": ["paraphrase"]
+        }
+      ]
+    },
+    {
+      "key": "developer-api",
+      "family": "integrations",
+      "need": "Developers need programmatic access so Tasklane can be automated and synchronised with internal systems.",
+      "requests": [
+        {
+          "title": "Public REST API",
+          "description": "Our developers want to sync projects with our internal ERP. Without an API we export and import files every night.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Webhooks on task changes",
+          "description": "Send a webhook when a task is created, updated or completed so we can trigger our own automations.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Automate client onboarding",
+          "description": "When a deal is won in our CRM we'd like a project to be created automatically in Tasklane by our own scripts.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "API access tokens",
+          "description": "Personal API tokens for scripts.",
+          "tags": ["terse"]
+        }
+      ]
+    },
+    {
+      "key": "email-to-task",
+      "family": "integrations",
+      "need": "Requests that arrive by email need to become tasks without retyping.",
+      "requests": [
+        {
+          "title": "Create tasks by forwarding emails",
+          "description": "Clients send requests by email. I'd like to forward the email to a project address and have it become a task with the attachments.",
+          "tags": ["canonical"]
+        }
+      ]
+    },
+    {
+      "key": "attachment-content-search",
+      "family": "search",
+      "need": "Users need to find information that lives inside attached files, not only in task titles.",
+      "requests": [
+        {
+          "title": "Search inside attached files",
+          "description": "We attach briefs and contracts as PDFs. Search only looks at task titles, so finding 'that brief mentioning the blue logo' is impossible.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Full-text search of documents",
+          "description": "Index the text content of uploaded documents so search can find them.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Can't find the contract",
+          "description": "I knew a clause was in one of the attached contracts but had to open 20 files to find it.",
+          "tags": ["problem_framed"]
+        }
+      ]
+    },
+    {
+      "key": "saved-filters",
+      "family": "search",
+      "need": "Users repeatedly rebuild the same filtered views and want to reuse them.",
+      "requests": [
+        {
+          "title": "Save filter combinations",
+          "description": "Every morning I filter tasks by 'assigned to my team, due this week, not done'. I have to rebuild that filter each time.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Saved views",
+          "description": "Allow saving and sharing custom views with filters and sorting.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Pin my favorite filters",
+          "description": "Put my most-used filters in the sidebar.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Filters reset every time",
+          "description": "When I come back to the list my filters are gone. Remembering them would save time.",
+          "tags": ["paraphrase"]
+        }
+      ]
+    },
+    {
+      "key": "workload-capacity",
+      "family": "resourcing",
+      "need": "Managers need to see how loaded each person is before assigning work, to avoid overload.",
+      "requests": [
+        {
+          "title": "See who has capacity before assigning work",
+          "description": "I assign tasks blind. Sometimes one designer has 60 hours scheduled next week while another has 10. I need to see workload per person.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Workload view",
+          "description": "A view showing scheduled hours per person per week versus their capacity.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Burnout on the team",
+          "description": "Two senior developers burned out last quarter because work kept landing on them. We need to spot overload earlier.",
+          "tags": ["problem_framed"]
+        },
+        {
+          "title": "Resource planning",
+          "description": "resource planning / capacity planning module",
+          "tags": ["terse"]
+        },
+        {
+          "title": "Balance assignments across the team",
+          "description": "Help me distribute tasks fairly based on how busy people already are.",
+          "tags": ["paraphrase"]
+        }
+      ]
+    },
+    {
+      "key": "time-off-tracking",
+      "family": "resourcing",
+      "need": "Plans need to account for people's absences so work isn't assigned to someone who is away.",
+      "requests": [
+        {
+          "title": "Track vacations and time off",
+          "description": "When someone is on holiday, tasks are still assigned to them and deadlines slip. We need to record time off in Tasklane.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Public holidays per country",
+          "description": "Our team is in three countries; plans should account for each country's public holidays.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "Out-of-office status",
+          "description": "Show an out-of-office badge on people who are away so others don't wait on them.",
+          "tags": ["solution_shaped"]
+        }
+      ]
+    },
+    {
+      "key": "project-budget-alerts",
+      "family": "resourcing",
+      "need": "Project leads need early warning when a project is burning through its budgeted hours.",
+      "requests": [
+        {
+          "title": "Warn when project hours exceed the budget",
+          "description": "We sold a fixed-fee project at 200 hours and only noticed we'd burned 280 when we sent the final invoice.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Budget threshold alerts",
+          "description": "Notify the PM when a project reaches 80% and 100% of its budgeted hours.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Scope creep goes unnoticed",
+          "description": "Projects quietly go over budget and by the time anyone looks it's too late to talk to the client.",
+          "tags": ["problem_framed"]
+        }
+      ]
+    },
+    {
+      "key": "eu-data-residency",
+      "family": "data",
+      "need": "Customers with regulatory or contractual constraints need their data stored in a specific region (the EU).",
+      "requests": [
+        {
+          "title": "Host our data in the EU",
+          "description": "Our German clients require that their project data stays within the EU. Without EU hosting we can't use Tasklane for them.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Data residency options",
+          "description": "Let enterprise customers choose the region where their data is stored.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "GDPR concerns from legal",
+          "description": "Legal flagged that our data is processed in the US. They'd approve Tasklane if storage were in Europe.",
+          "tags": ["paraphrase"]
+        }
+      ]
+    },
+    {
+      "key": "data-retention-policy",
+      "family": "data",
+      "need": "Firms need client data deleted automatically after a contractual retention period.",
+      "requests": [
+        {
+          "title": "Automatically delete old project data",
+          "description": "Our contracts say we must delete client materials 12 months after a project ends. We do it manually and sometimes forget.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Retention policies",
+          "description": "A configurable retention policy: purge attachments and comments after N months.",
+          "tags": ["solution_shaped"]
+        }
+      ]
+    },
+    {
+      "key": "custom-task-fields",
+      "family": "task-structure",
+      "need": "Teams need to capture their own structured attributes on tasks.",
+      "requests": [
+        {
+          "title": "Custom fields on tasks",
+          "description": "We need to track things like 'client approval status' and 'story points' on tasks. Today we put them in the title in brackets, which is messy.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Add our own task attributes",
+          "description": "Allow admins to define extra fields (dropdown, number, date) for tasks.",
+          "tags": ["solution_shaped"]
+        },
+        {
+          "title": "Track estimate on each task",
+          "description": "There's no place to record an estimate per task, so we write it in the description.",
+          "tags": ["paraphrase"]
+        },
+        {
+          "title": "Filter by custom properties",
+          "description": "We want to add properties like 'priority tier' to tasks and filter on them. It would also be nice to save those filters for later.",
+          "tags": ["multi_need"],
+          "alsoAcceptable": ["saved-filters"]
+        }
+      ]
+    },
+    {
+      "key": "recover-deleted-items",
+      "family": "task-structure",
+      "need": "Users need a way to recover from accidental deletions and destructive mistakes.",
+      "requests": [
+        {
+          "title": "Recover deleted tasks",
+          "description": "Someone accidentally deleted a task with three weeks of comments. There's no trash or undo, so it was gone for good.",
+          "tags": ["canonical"]
+        },
+        {
+          "title": "Undo button",
+          "description": "An undo for destructive actions like delete or move would save us from mistakes.",
+          "tags": ["solution_shaped"]
+        }
+      ]
+    }
+  ]
+}

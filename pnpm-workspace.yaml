@@ -1,0 +1,14 @@
+packages:
+  - apps/*
+  - packages/*
+
+# pnpm 10 does not run dependency lifecycle scripts unless they are allowed here.
+onlyBuiltDependencies:
+  - '@nestjs/core'
+  - '@prisma/engines'
+  - '@swc/core'
+  - esbuild
+  - prisma
+
+ignoredBuiltDependencies:
+  - '@scarf/scarf'

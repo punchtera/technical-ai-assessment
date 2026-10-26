@@ -1,0 +1,48 @@
+{
+  "name": "@fis/api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "NestJS REST API for the Feature Intelligence System.",
+  "scripts": {
+    "dev": "pnpm run db:generate && nest start --watch",
+    "build": "pnpm run db:generate && nest build",
+    "start": "node dist/main.js",
+    "typecheck": "pnpm run db:generate && tsc --noEmit -p tsconfig.json",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:integration": "pnpm run db:generate && vitest run --config vitest.integration.config.ts",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "demo:setup": "node scripts/demo.mjs setup",
+    "demo:reset": "node scripts/demo.mjs reset",
+    "demo:api": "node scripts/demo.mjs api",
+    "demo:seed": "node scripts/demo.mjs seed"
+  },
+  "dependencies": {
+    "@fis/contracts": "workspace:*",
+    "@fis/triage-core": "workspace:*",
+    "@nestjs/common": "11.2.8",
+    "@nestjs/core": "11.2.8",
+    "@nestjs/platform-express": "11.2.8",
+    "@nestjs/swagger": "11.4.7",
+    "@prisma/adapter-pg": "7.10.1",
+    "@prisma/client": "7.10.1",
+    "pg": "8.23.1",
+    "reflect-metadata": "0.2.2",
+    "rxjs": "7.8.2",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "11.0.24",
+    "@nestjs/testing": "11.2.8",
+    "@swc/core": "1.16.20",
+    "@types/express": "5.0.6",
+    "@types/node": "22.20.5",
+    "@types/supertest": "6.0.3",
+    "prisma": "7.10.1",
+    "supertest": "7.3.1",
+    "unplugin-swc": "2.0.0",
+    "vitest": "3.2.7"
+  }
+}

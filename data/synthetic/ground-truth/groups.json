@@ -1,0 +1,242 @@
+[
+  {
+    "key": "admin-audit-trail",
+    "family": "export",
+    "need": "Admins and compliance teams need a reliable record of who changed what (permissions, deletions, logins) to answer audits and investigations.",
+    "size": 4
+  },
+  {
+    "key": "attachment-content-search",
+    "family": "search",
+    "need": "Users need to find information that lives inside attached files, not only in task titles.",
+    "size": 3
+  },
+  {
+    "key": "bulk-edit-tasks",
+    "family": "bulk",
+    "need": "Users need to apply the same change to many existing tasks at once instead of editing them one by one.",
+    "size": 8
+  },
+  {
+    "key": "calendar-sync",
+    "family": "integrations",
+    "need": "People who plan their week in an external calendar need task deadlines to appear there.",
+    "size": 5
+  },
+  {
+    "key": "chat-integration",
+    "family": "integrations",
+    "need": "Teams that coordinate in a chat tool need work requests and task updates to move between chat and Tasklane.",
+    "size": 8
+  },
+  {
+    "key": "client-guest-access",
+    "family": "permissions",
+    "need": "Firms want clients and outside collaborators to see the progress of their own work without full seats or access to other clients.",
+    "size": 6
+  },
+  {
+    "key": "custom-task-fields",
+    "family": "task-structure",
+    "need": "Teams need to capture their own structured attributes on tasks.",
+    "size": 4
+  },
+  {
+    "key": "dark-mode",
+    "family": "ui",
+    "need": "Users working in low light want a dark appearance that is comfortable for their eyes.",
+    "size": 10
+  },
+  {
+    "key": "data-retention-policy",
+    "family": "data",
+    "need": "Firms need client data deleted automatically after a contractual retention period.",
+    "size": 2
+  },
+  {
+    "key": "developer-api",
+    "family": "integrations",
+    "need": "Developers need programmatic access so Tasklane can be automated and synchronised with internal systems.",
+    "size": 4
+  },
+  {
+    "key": "email-to-task",
+    "family": "integrations",
+    "need": "Requests that arrive by email need to become tasks without retyping.",
+    "size": 1
+  },
+  {
+    "key": "eu-data-residency",
+    "family": "data",
+    "need": "Customers with regulatory or contractual constraints need their data stored in a specific region (the EU).",
+    "size": 3
+  },
+  {
+    "key": "financial-field-privacy",
+    "family": "permissions",
+    "need": "Confidential financial information (rates, costs, budgets) must be visible only to authorised roles.",
+    "size": 3
+  },
+  {
+    "key": "import-tasks-from-files",
+    "family": "bulk",
+    "need": "Teams migrating to Tasklane need to bring existing work in from spreadsheets or other tools.",
+    "size": 6
+  },
+  {
+    "key": "interface-localization",
+    "family": "ui",
+    "need": "Staff who are not fluent in English need the interface in their own language.",
+    "size": 1
+  },
+  {
+    "key": "invoice-accounting-sync",
+    "family": "export",
+    "need": "Finance staff need invoice data to reach their accounting system without manual re-entry or reconciliation.",
+    "size": 9
+  },
+  {
+    "key": "keyboard-power-user",
+    "family": "ui",
+    "need": "Heavy daily users want to work faster without the mouse.",
+    "size": 3
+  },
+  {
+    "key": "low-vision-accessibility",
+    "family": "ui",
+    "need": "Users with low vision need sufficient contrast, scalable text and zoom support to read and use the app.",
+    "size": 5
+  },
+  {
+    "key": "mention-push-alerts",
+    "family": "notifications",
+    "need": "People away from their desk need to learn immediately when someone mentions or needs them.",
+    "size": 6
+  },
+  {
+    "key": "multi-currency-invoicing",
+    "family": "billing",
+    "need": "Firms with international clients need to bill each client in that client's currency.",
+    "size": 4
+  },
+  {
+    "key": "notification-volume-digest",
+    "family": "notifications",
+    "need": "Users receive so many individual notifications that they ignore them; they need fewer, consolidated updates.",
+    "size": 10
+  },
+  {
+    "key": "offline-mobile-time",
+    "family": "time",
+    "need": "Field workers need to record time on mobile without connectivity and have it sync later.",
+    "size": 5
+  },
+  {
+    "key": "online-invoice-payment",
+    "family": "billing",
+    "need": "Firms want clients to be able to pay invoices online so that money arrives sooner and with less manual work.",
+    "size": 8
+  },
+  {
+    "key": "overdue-invoice-reminders",
+    "family": "billing",
+    "need": "Firms need overdue invoices to be followed up reliably without staff writing chasing emails.",
+    "size": 4
+  },
+  {
+    "key": "project-budget-alerts",
+    "family": "resourcing",
+    "need": "Project leads need early warning when a project is burning through its budgeted hours.",
+    "size": 3
+  },
+  {
+    "key": "project-templates",
+    "family": "reuse",
+    "need": "Teams want to start new projects from a standard, reusable structure instead of rebuilding or copying old ones.",
+    "size": 5
+  },
+  {
+    "key": "quiet-hours",
+    "family": "notifications",
+    "need": "People in distributed teams need protection from notifications outside their own working hours.",
+    "size": 3
+  },
+  {
+    "key": "recover-deleted-items",
+    "family": "task-structure",
+    "need": "Users need a way to recover from accidental deletions and destructive mistakes.",
+    "size": 2
+  },
+  {
+    "key": "recurring-tasks",
+    "family": "reuse",
+    "need": "Work that happens on a regular schedule should reappear automatically so it is not forgotten.",
+    "size": 6
+  },
+  {
+    "key": "runaway-timer-safeguard",
+    "family": "time",
+    "need": "Time entries become wrong when people forget to stop timers; they need safeguards against runaway or idle time.",
+    "size": 8
+  },
+  {
+    "key": "saved-filters",
+    "family": "search",
+    "need": "Users repeatedly rebuild the same filtered views and want to reuse them.",
+    "size": 4
+  },
+  {
+    "key": "scheduled-report-delivery",
+    "family": "export",
+    "need": "Managers and executives want recurring reports delivered to them automatically, without logging in or assembling them by hand.",
+    "size": 5
+  },
+  {
+    "key": "session-timeout",
+    "family": "auth",
+    "need": "Admins need sessions on shared or unattended computers to expire automatically.",
+    "size": 2
+  },
+  {
+    "key": "single-sign-on",
+    "family": "auth",
+    "need": "IT needs Tasklane sign-in and access removal to be controlled centrally through the company identity provider.",
+    "size": 9
+  },
+  {
+    "key": "task-dependencies",
+    "family": "scheduling",
+    "need": "Teams need to express that work depends on other work, so ordering is respected and the impact of delays is visible.",
+    "size": 7
+  },
+  {
+    "key": "time-off-tracking",
+    "family": "resourcing",
+    "need": "Plans need to account for people's absences so work isn't assigned to someone who is away.",
+    "size": 3
+  },
+  {
+    "key": "timeline-view",
+    "family": "scheduling",
+    "need": "Planners need to see and communicate a project schedule laid out over time.",
+    "size": 6
+  },
+  {
+    "key": "timesheet-approval",
+    "family": "time",
+    "need": "Managers need to review and approve logged hours before they are billed.",
+    "size": 6
+  },
+  {
+    "key": "two-factor-authentication",
+    "family": "auth",
+    "need": "Account owners need a second factor so that a stolen password alone cannot grant access.",
+    "size": 5
+  },
+  {
+    "key": "workload-capacity",
+    "family": "resourcing",
+    "need": "Managers need to see how loaded each person is before assigning work, to avoid overload.",
+    "size": 5
+  }
+]

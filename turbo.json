@@ -1,0 +1,44 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "globalPassThroughEnv": [
+    "DATABASE_URL",
+    "TEST_DATABASE_URL",
+    "API_PORT",
+    "WEB_ORIGIN",
+    "VITE_API_BASE_URL",
+    "PRISMA_SCHEMA_ENGINE_BINARY",
+    "CI",
+    "PLAYWRIGHT_BROWSERS_PATH",
+    "DEMO_DATABASE_URL",
+    "DEMO_API_URL",
+    "HOME"
+  ],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", "src/generated/**"]
+    },
+    "dev": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "persistent": true
+    },
+    "typecheck": {
+      "dependsOn": ["^build"]
+    },
+    "lint": {
+      "dependsOn": ["^build"]
+    },
+    "test": {
+      "dependsOn": ["^build"]
+    },
+    "test:integration": {
+      "dependsOn": ["^build"],
+      "cache": false
+    },
+    "test:e2e": {
+      "dependsOn": ["^build", "@fis/api#build"],
+      "cache": false
+    }
+  }
+}

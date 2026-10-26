@@ -1,0 +1,291 @@
+// Prisma schema for the Feature Intelligence System.
+//
+// Separation of concerns, enforced by the model:
+//   source records      → FeatureRequest (original text preserved verbatim)
+//   AI recommendations  → TriageRun (proposals only; never a membership)
+//   human decisions     → ReviewDecision → GroupMembership
+//   history             → AuditEvent (append-only)
+//
+// Vector columns use Unsupported("vector(1024)"): Prisma has no native vector
+// type, so similarity queries are narrowly scoped, parameterised $queryRaw.
+
+generator client {
+  provider        = "prisma-client"
+  output          = "../src/generated/prisma"
+  moduleFormat    = "cjs"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  extensions = [vector]
+}
+
+enum SourceChannel {
+  PORTAL
+  EMAIL
+  CUSTOMER_SUCCESS
+  SALES
+  SUPPORT
+}
+
+/// Review state of a request: waiting for a human decision, or in an approved group.
+enum ReviewStatus {
+  PENDING_REVIEW
+  GROUPED
+}
+
+/// AI processing state, independent of review: the queue stays usable when AI fails.
+enum ProcessingStatus {
+  QUEUED
+  PROCESSING
+  COMPLETED
+  FAILED
+  NOT_CONFIGURED
+}
+
+enum TriageRunStatus {
+  RUNNING
+  SUCCEEDED
+  FAILED
+}
+
+enum ProposedAction {
+  LINK_EXISTING
+  CREATE_GROUP
+  NEEDS_REVIEW
+}
+
+/// Whether a human acted on a run's suggestion.
+enum SuggestionStatus {
+  OPEN
+  ACCEPTED
+  REJECTED
+  SUPERSEDED
+}
+
+enum MembershipStatus {
+  ACTIVE
+  REVERSED
+}
+
+enum DecisionAction {
+  LINK_TO_GROUP
+  CREATE_GROUP
+  REJECT_SUGGESTION
+  REVERSE_MEMBERSHIP
+}
+
+/// Embedding configurations. Model + dimension are explicit so incompatible vectors never mix.
+model EmbeddingSpace {
+  id         String   @id
+  provider   String
+  model      String
+  dimensions Int
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  embeddings RequestEmbedding[]
+
+  @@unique([provider, model, dimensions])
+  @@map("embedding_spaces")
+}
+
+model FeatureRequest {
+  id                  String           @id @default(uuid()) @db.Uuid
+  /// Original text, stored verbatim: the evidence source for reviewers.
+  title               String           @db.VarChar(200)
+  description         String
+  /// Redacted copies: the only text sent to external AI providers.
+  redactedTitle       String           @map("redacted_title") @db.VarChar(200)
+  redactedDescription String           @map("redacted_description")
+  /// Counts of masked items by type (never the values).
+  redactionSummary    Json             @map("redaction_summary")
+  sourceChannel       SourceChannel    @default(PORTAL) @map("source_channel")
+  /// Client-supplied key that makes submission retries safe.
+  idempotencyKey      String?          @unique @map("idempotency_key") @db.VarChar(100)
+  reviewStatus        ReviewStatus     @default(PENDING_REVIEW) @map("review_status")
+  processingStatus    ProcessingStatus @default(QUEUED) @map("processing_status")
+  processingAttempts  Int              @default(0) @map("processing_attempts")
+  processingStartedAt DateTime?        @map("processing_started_at") @db.Timestamptz(3)
+  /// Error code of the last failed run (no provider messages or text).
+  processingError     String?          @map("processing_error") @db.VarChar(64)
+  /// Incremented on every review-state change; used for consistency checks.
+  version             Int              @default(0)
+  createdAt           DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt           DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  triageRuns  TriageRun[]
+  memberships GroupMembership[]
+  decisions   ReviewDecision[]
+  supports    Support[]
+  embeddings  RequestEmbedding[]
+  auditEvents AuditEvent[]
+
+  @@index([reviewStatus, createdAt])
+  @@index([processingStatus, createdAt])
+  @@map("feature_requests")
+}
+
+model NeedGroup {
+  id            String   @id @default(uuid()) @db.Uuid
+  title         String   @db.VarChar(200)
+  /// Human-approved underlying-need description.
+  needStatement String   @map("need_statement")
+  createdBy     String   @map("created_by") @db.VarChar(100)
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  memberships    GroupMembership[]
+  proposedInRuns TriageRun[]       @relation("ProposedGroup")
+  decisions      ReviewDecision[]
+  auditEvents    AuditEvent[]
+
+  @@map("need_groups")
+}
+
+/// An APPROVED relationship. Created only by a human review decision.
+model GroupMembership {
+  id                 String           @id @default(uuid()) @db.Uuid
+  requestId          String           @map("request_id") @db.Uuid
+  groupId            String           @map("group_id") @db.Uuid
+  status             MembershipStatus @default(ACTIVE)
+  /// Equals request_id while ACTIVE and NULL once reversed. The unique
+  /// constraint guarantees at most one active membership per request, even
+  /// under concurrent reviews (NULLs do not conflict in PostgreSQL).
+  activeRequestId    String?          @unique @map("active_request_id") @db.Uuid
+  approvedBy         String           @map("approved_by") @db.VarChar(100)
+  approvedAt         DateTime         @default(now()) @map("approved_at") @db.Timestamptz(3)
+  decisionId         String           @unique @map("decision_id") @db.Uuid
+  reversedBy         String?          @map("reversed_by") @db.VarChar(100)
+  reversedAt         DateTime?        @map("reversed_at") @db.Timestamptz(3)
+  reversalReason     String?          @map("reversal_reason") @db.VarChar(500)
+  reversalDecisionId String?          @unique @map("reversal_decision_id") @db.Uuid
+
+  request          FeatureRequest  @relation(fields: [requestId], references: [id], onDelete: Restrict)
+  group            NeedGroup       @relation(fields: [groupId], references: [id], onDelete: Restrict)
+  decision         ReviewDecision  @relation("MembershipDecision", fields: [decisionId], references: [id])
+  reversalDecision ReviewDecision? @relation("MembershipReversal", fields: [reversalDecisionId], references: [id])
+
+  @@index([groupId, status])
+  @@index([requestId])
+  @@map("group_memberships")
+}
+
+/// One AI processing attempt for a request. A recommendation, never a decision.
+model TriageRun {
+  id               String           @id @default(uuid()) @db.Uuid
+  requestId        String           @map("request_id") @db.Uuid
+  /// Matches feature_requests.processing_attempts at claim time; unique per request,
+  /// so a duplicate processing attempt cannot create a second run for the same attempt.
+  attempt          Int
+  status           TriageRunStatus  @default(RUNNING)
+  /// "anthropic+voyage" or "deterministic-test" — always shown to reviewers.
+  provider         String           @db.VarChar(64)
+  isTestProvider   Boolean          @map("is_test_provider")
+  pipelineVersion  String           @map("pipeline_version") @db.VarChar(64)
+  promptVersion    String           @map("prompt_version") @db.VarChar(64)
+  extractionModel  String?          @map("extraction_model") @db.VarChar(100)
+  assessmentModel  String?          @map("assessment_model") @db.VarChar(100)
+  embeddingModel   String?          @map("embedding_model") @db.VarChar(100)
+  /// Validated stage outputs (JSON) for reproduction and evaluation.
+  extraction       Json?
+  extractionChecks Json?            @map("extraction_checks")
+  retrieval        Json?
+  candidateRefs    Json?            @map("candidate_refs")
+  memberRefs       Json?            @map("member_refs")
+  assessment       Json?
+  assessmentChecks Json?            @map("assessment_checks")
+  proposedAction   ProposedAction?  @map("proposed_action")
+  proposedGroupId  String?          @map("proposed_group_id") @db.Uuid
+  confidence       String?          @db.VarChar(16)
+  flags            String[]         @default([])
+  rationale        String?
+  suggestionStatus SuggestionStatus @default(OPEN) @map("suggestion_status")
+  errorCode        String?          @map("error_code") @db.VarChar(64)
+  errorStage       String?          @map("error_stage") @db.VarChar(32)
+  providerCalls    Int              @default(0) @map("provider_calls")
+  usage            Json?
+  latencyMs        Int?             @map("latency_ms")
+  startedAt        DateTime         @default(now()) @map("started_at") @db.Timestamptz(3)
+  completedAt      DateTime?        @map("completed_at") @db.Timestamptz(3)
+
+  request       FeatureRequest   @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  proposedGroup NeedGroup?       @relation("ProposedGroup", fields: [proposedGroupId], references: [id], onDelete: SetNull)
+  decisions     ReviewDecision[]
+
+  @@unique([requestId, attempt])
+  @@index([requestId, startedAt])
+  @@map("triage_runs")
+}
+
+/// Immutable record of a human decision.
+model ReviewDecision {
+  id              String         @id @default(uuid()) @db.Uuid
+  requestId       String         @map("request_id") @db.Uuid
+  triageRunId     String?        @map("triage_run_id") @db.Uuid
+  action          DecisionAction
+  groupId         String?        @map("group_id") @db.Uuid
+  /// Whether the decision followed the AI proposal (null when there was none).
+  matchedProposal Boolean?       @map("matched_proposal")
+  actor           String         @db.VarChar(100)
+  note            String?        @db.VarChar(1000)
+  createdAt       DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  request             FeatureRequest   @relation(fields: [requestId], references: [id], onDelete: Restrict)
+  triageRun           TriageRun?       @relation(fields: [triageRunId], references: [id], onDelete: SetNull)
+  group               NeedGroup?       @relation(fields: [groupId], references: [id], onDelete: Restrict)
+  createdMembership   GroupMembership? @relation("MembershipDecision")
+  reversedMembership  GroupMembership? @relation("MembershipReversal")
+
+  @@index([requestId, createdAt])
+  @@map("review_decisions")
+}
+
+/// "Express interest": one row per supporter per request. No personal data —
+/// supporterRef is a pseudonymous handle chosen by the client.
+model Support {
+  id           String   @id @default(uuid()) @db.Uuid
+  requestId    String   @map("request_id") @db.Uuid
+  supporterRef String   @map("supporter_ref") @db.VarChar(100)
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  request FeatureRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+
+  @@unique([requestId, supporterRef])
+  @@map("supports")
+}
+
+/// Append-only history. Details hold ids, codes and actions — never request text.
+model AuditEvent {
+  id        String   @id @default(uuid()) @db.Uuid
+  requestId String?  @map("request_id") @db.Uuid
+  groupId   String?  @map("group_id") @db.Uuid
+  type      String   @db.VarChar(64)
+  actor     String   @db.VarChar(100)
+  details   Json     @default("{}")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  request FeatureRequest? @relation(fields: [requestId], references: [id], onDelete: Restrict)
+  group   NeedGroup?      @relation(fields: [groupId], references: [id], onDelete: Restrict)
+
+  @@index([requestId, createdAt])
+  @@index([groupId, createdAt])
+  @@map("audit_events")
+}
+
+/// Embedding of a request's extracted need statement in one embedding space.
+model RequestEmbedding {
+  requestId        String                      @map("request_id") @db.Uuid
+  embeddingSpaceId String                      @map("embedding_space_id")
+  embedding        Unsupported("vector(1024)")
+  /// SHA-256 of the embedded text, to detect stale vectors.
+  contentHash      String                      @map("content_hash") @db.Char(64)
+  createdAt        DateTime                    @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  request        FeatureRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  embeddingSpace EmbeddingSpace @relation(fields: [embeddingSpaceId], references: [id], onDelete: Restrict)
+
+  @@id([requestId, embeddingSpaceId])
+  @@index([embeddingSpaceId])
+  @@map("request_embeddings")
+}

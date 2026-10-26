@@ -1,0 +1,12 @@
+dist
+coverage
+node_modules
+.turbo
+pnpm-lock.yaml
+**/src/generated
+**/migrations/**/*.sql
+# dataset files are hashed by the manifest; formatting them would invalidate it
+data
+prompts.txt
+CLAUDE.md
+docs/product-design.md
