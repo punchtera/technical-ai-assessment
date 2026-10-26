@@ -13,6 +13,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@fis/triage-core": "workspace:*",
     "zod": "4.6.7"
   },
   "devDependencies": {

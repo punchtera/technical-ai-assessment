@@ -7,6 +7,7 @@ export default defineConfig({
   preview: { port: 4173, strictPort: true },
   test: {
     include: ['src/**/*.test.{ts,tsx}'],
+    exclude: ['e2e/**', 'node_modules/**'],
     environment: 'node',
   },
 });

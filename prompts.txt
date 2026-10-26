@@ -176,3 +176,127 @@ Summary of actions:
 - Updated README.md prerequisites and docs/development.md (pnpm install
   without corepack, Docker must be running, troubleshooting entries).
 - No commits or pushes.
+
+================================================================================
+[2026-10-26T02:04:55Z] PROMPT #8
+--------------------------------------------------------------------------------
+Prompt:
+"It runs successfully, now you can proceed with the second step of the
+implementation and the corresponding prompt around it" - implement STEP 2 of
+the "Implement the AI-First Feature-Request Triage Application" prompt:
+domain model + API + AI pipeline (provider verification, need extraction with
+quote validation, pgvector retrieval, structured candidate assessment, human
+review with reversal, audit history, failure handling), with tests and docs.
+
+Summary of actions (completed 2026-10-26T02:37:06Z):
+- Verified provider facts from official docs before coding: claude-haiku-5-5
+  / claude-sonnet-5-5 ids, pricing ($0.10/$0.50 per MTok Haiku <=100K),
+  rate limits, structured outputs (output_config.format), effort, removed
+  sampling params; Voyage voyage-4-lite (1024 dims, $0.02/MTok, limits,
+  endpoint fields); @anthropic-ai/sdk 1.3.0 typings.
+- New packages/triage-core: framework-free pipeline shared by API and
+  evaluation (PII redaction, need extraction schema + exact-quote checks,
+  embedding retrieval aggregation, discriminated-union assessment with
+  alias-only candidate refs, deterministic proposal rules, bounded retry,
+  Anthropic + Voyage adapters, explicitly labelled deterministic test
+  provider, opt-in live tests).
+- Prisma domain migration: feature_requests, triage_runs, review_decisions,
+  group_memberships (unique active key + CHECK), need_groups, supports,
+  audit_events, request_embeddings vector(1024); all timestamptz; sessions
+  pinned to UTC (fixed a time-zone bug found by the lease-recovery test).
+- API: submit (idempotency key), list/search, detail with traced evidence,
+  history, supports, safe triage retry, review decisions (link / create
+  group / reject) with row locks + expectedVersion, reversal, groups,
+  AI status; DB-backed worker with SKIP LOCKED claims and lease recovery;
+  OpenAPI registry checked against controllers.
+- Evaluation: `pnpm eval --matcher deterministic|ai` runs the production
+  pipeline offline with a leakage test; deterministic run measured
+  (mechanics only, not AI); AI run implemented but NOT run (no keys).
+- Docs updated (README, architecture, ai-integration, development,
+  evaluation). Verified from clean install: format, lint, typecheck,
+  87 unit + 27 integration tests, build, dataset:validate, evals; live
+  tests skipped (no credentials).
+- Left uncommitted for user testing (per PROMPT #9).
+
+================================================================================
+[2026-10-26T02:28:24Z] PROMPT #9
+--------------------------------------------------------------------------------
+Prompt:
+"After you finish, commit the files that belong to the output of the first
+step from the current prompt with a meaningful message, and leave the
+remaining ones for testing before running the final step of this second
+prompt."
+
+Summary of actions:
+- Committed the step 1 output on `dev` as 8677677 "feat: foundation
+  monorepo, synthetic dataset and offline evaluation (step 1)": 103 files
+  plus prompts.txt entries #1-#7 (staged as a truncated blob so the
+  in-progress step 2 log entries stay uncommitted).
+- Left out docs/product-design.md (output of the design prompt #4, not of
+  step 1) and everything from step 2; these remain uncommitted for review.
+- No push.
+
+================================================================================
+[2026-10-26T11:31:15Z] PROMPT #10
+--------------------------------------------------------------------------------
+Prompt:
+"Task: Complete the AI-First Feature-Request Triage Application and Prepare a
+Demo" (attached prompt file; the file is truncated mid-sentence in Scenario 3
+of section 7). Implement the React frontend (submission, triage queue, request
+review with evidence and approve / reject / create group / retry / reversal,
+group inspection, audit history), integrate with the existing API, keep the
+app usable without AI keys (deterministic provider clearly labelled), prepare
+a reproducible synthetic demo with safe seed/reset commands and docs/demo.md,
+and add end-to-end tests for approve, reject and create-group scenarios. No
+commits or pushes unless requested.
+
+Summary of actions:
+- Implemented the React frontend (apps/web): submission with shared-contract validation and
+  idempotency key, triage queue (filters, search, extracted need, "not approved" recommendation),
+  review screen (evidence highlighting, uncertainty flags, approve / reject / link existing /
+  create group / retry / reverse with confirmations), group pages and audit history timeline.
+- Demo/AI-mode banner and "Demo provider - not AI" tags; app stays usable manually without AI.
+- Backend additions: extractedNeed in request summaries, demoMode in /system/ai.
+- Deterministic test provider v2 (stemming, n-gram hashing, match/uncertain/no_match), thresholds
+  chosen on the dev split only; real Anthropic/Voyage adapters untouched.
+- Safe demo tooling against a dedicated *_demo database: pnpm demo:setup / demo:api / demo:seed /
+  demo:reset (refuses non-demo DBs, seeds through the API, idempotent); data/demo/fixture.json.
+- docs/demo.md with verified scenarios and a recording plan; README and docs updated.
+- Playwright e2e (6 tests): seed, approve match, reject recommendation, create new group,
+  reversal, vague request + validation.
+- Verified in the cloud workspace: format, lint, typecheck, build, 91 unit, 27 integration, 6 e2e,
+  dataset validation all pass; live AI tests skipped (no keys, live AI unverified).
+- Note: the prompt file was truncated at Scenario 3. Nothing committed or pushed.
+
+================================================================================
+[2026-10-26T12:40:00Z] PROMPT #11
+--------------------------------------------------------------------------------
+Prompt:
+"copy it in"
+
+Summary of actions:
+- Copied the verified step 3 source from the cloud workspace into the project (archive extracted
+  and removed; prompts.txt, CLAUDE.md and docs/product-design.md were not overwritten).
+- Completed the PROMPT #10 summary above. Nothing committed or pushed.
+
+================================================================================
+[2026-10-26T13:50:00Z] PROMPT #12
+--------------------------------------------------------------------------------
+Prompt:
+"create a pr agaisnt main from dev to release that"
+
+Summary of actions:
+- Checked the repo: it has no git remote, and no GitHub repository is reachable from this
+  session, so a pull request cannot be opened yet. Steps 2 and 3 are still uncommitted on dev.
+- Asked the user for the GitHub repository and confirmation to commit steps 2 and 3.
+- User chose to stop; nothing was committed, pushed or opened.
+
+================================================================================
+[2026-10-26T13:52:00Z] PROMPT #13
+--------------------------------------------------------------------------------
+Prompt:
+"commit the current changes to the dev branch."
+
+Summary of actions:
+- Committed all current working-tree changes (steps 2 and 3 of the implementation prompt, the
+  product design doc and the prompt log) to dev in one commit after a secret scan. Not pushed.

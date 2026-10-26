@@ -1,10 +1,10 @@
-import { PrismaPg } from '@prisma/adapter-pg';
 import { afterAll, describe, expect, it } from 'vitest';
+import { createPgAdapter } from '../../src/database/prisma.service';
 import { PrismaClient } from '../../src/generated/prisma/client';
 
 describe('database migrations and pgvector', () => {
   const prisma = new PrismaClient({
-    adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL! }),
+    adapter: createPgAdapter(process.env.DATABASE_URL!),
   });
 
   afterAll(async () => {
@@ -40,6 +40,13 @@ describe('database migrations and pgvector', () => {
     expect(rows.map((row) => row.label)).toEqual(['same', 'orthogonal']);
     expect(Number(rows[0]!.distance)).toBeCloseTo(0, 6);
     expect(Number(rows[1]!.distance)).toBeCloseTo(1, 6);
+  });
+
+  it('stores instants correctly regardless of the server time zone', async () => {
+    const [row] = await prisma.$queryRaw<
+      { tz: string }[]
+    >`SELECT current_setting('TimeZone') AS tz`;
+    expect(row!.tz).toBe('UTC');
   });
 
   it('enforces one row per embedding configuration', async () => {

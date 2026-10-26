@@ -13,6 +13,8 @@
     "build": "turbo run build",
     "test": "turbo run test",
     "test:integration": "turbo run test:integration --concurrency=1",
+    "test:e2e": "turbo run test:e2e --filter=@fis/web",
+    "test:live": "pnpm --filter @fis/triage-core test:live",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
     "format": "prettier --write .",
@@ -24,7 +26,11 @@
     "db:migrate:deploy": "pnpm --filter @fis/api db:migrate:deploy",
     "dataset:generate": "pnpm --filter @fis/evaluation dataset:generate",
     "dataset:validate": "pnpm --filter @fis/evaluation dataset:validate",
-    "eval": "pnpm --filter @fis/evaluation eval"
+    "eval": "pnpm --filter @fis/evaluation eval",
+    "demo:setup": "pnpm --filter @fis/api demo:setup",
+    "demo:api": "pnpm --filter @fis/api demo:api",
+    "demo:seed": "pnpm --filter @fis/api demo:seed",
+    "demo:reset": "pnpm --filter @fis/api demo:reset --yes"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",

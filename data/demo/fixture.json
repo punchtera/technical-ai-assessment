@@ -1,0 +1,37 @@
+{
+  "notice": "DEMO FIXTURE — synthetic data only. Seed groups below are curated for the demo and created through the public API by the reviewer handle 'demo.seed'. Request texts are read from data/synthetic/requests.jsonl (runtime inputs, no labels). Nothing here is used by runtime matching.",
+  "seedActor": "demo.seed",
+  "idempotencyPrefix": "demo-seed-",
+  "groups": [
+    {
+      "title": "Dark mode",
+      "needStatement": "People working in low light want a darker appearance that is comfortable for their eyes.",
+      "members": ["syn-bfddfa16b327", "syn-b8a63f5f2c84", "syn-07257d41e921"]
+    },
+    {
+      "title": "Fewer, consolidated notifications",
+      "needStatement": "Users receive so many individual notifications that they ignore them; they need fewer, bundled updates.",
+      "members": ["syn-c2f7b7c54871", "syn-a40f1e23178c", "syn-b9cd027c49d8"]
+    },
+    {
+      "title": "Single sign-on and central access control",
+      "needStatement": "IT needs sign-in and access removal to be controlled centrally through the company identity provider.",
+      "members": ["syn-979cad667bc8", "syn-33878cb6c96f", "syn-2f799e62a7ab"]
+    },
+    {
+      "title": "Invoices flow into accounting",
+      "needStatement": "Finance staff need invoice data to reach their accounting system without manual re-entry.",
+      "members": ["syn-dcda7b3b9c21", "syn-821aee5dc324"]
+    },
+    {
+      "title": "Safeguards against forgotten timers",
+      "needStatement": "Time entries become wrong when people forget to stop timers; they need reminders or automatic safeguards.",
+      "members": ["syn-ab904fca5f87", "syn-d9279575ada0"]
+    },
+    {
+      "title": "Edit many tasks at once",
+      "needStatement": "Users need to apply the same change to many existing tasks instead of editing them one by one.",
+      "members": ["syn-298f1253b1e4", "syn-018e5db9c6da"]
+    }
+  ]
+}

@@ -16,7 +16,7 @@ function sourceFiles(dir: string): string[] {
 describe('ground-truth isolation', () => {
   it('application source never references synthetic labels or the evaluation package', () => {
     const offenders: string[] = [];
-    for (const app of ['apps/api/src', 'apps/web/src']) {
+    for (const app of ['apps/api/src', 'apps/web/src', 'packages/triage-core/src']) {
       for (const file of sourceFiles(join(REPO_ROOT, app))) {
         const text = readFileSync(file, 'utf8');
         if (/ground-truth|labels\.jsonl|@fis\/evaluation|data\/synthetic/.test(text)) {

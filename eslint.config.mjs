@@ -67,6 +67,11 @@ export default tseslint.config(
     },
   },
   {
+    // The production pipeline must stay blind to synthetic labels too.
+    files: ['packages/triage-core/**/*.ts'],
+    rules: groundTruthIsolation,
+  },
+  {
     files: ['apps/web/**/*.{ts,tsx}'],
     plugins: { 'react-hooks': reactHooks },
     languageOptions: { globals: { ...globals.browser } },

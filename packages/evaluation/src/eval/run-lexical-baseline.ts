@@ -24,6 +24,7 @@ export interface SplitReport {
   decision: DecisionMetrics;
   hardNegatives: DecisionMetrics;
   byTag: Record<string, DecisionMetrics>;
+  pipeline?: PipelineExtras;
   /** A few concrete errors for manual inspection (titles only; harness-side). */
   examples: {
     wrongLinks: { requestId: string; title: string; trueGroup: string; topScore: number }[];
@@ -31,15 +32,25 @@ export interface SplitReport {
   };
 }
 
+export interface PipelineExtras {
+  /** needs_review proposals that carried a suggested group, scored as if the reviewer followed it. */
+  suggestionsIfFollowed: DecisionMetrics;
+  proposalActions: Record<'link_existing' | 'create_group' | 'needs_review', number>;
+  failures: { count: number; byCode: Record<string, number> };
+  invalidQuotes: { extraction: number; assessment: number };
+  flags: Record<string, number>;
+  providerCalls: number;
+  usage: { inputTokens: number; outputTokens: number };
+}
+
 export interface EvaluationReport {
   generatedAt: string;
   matcher: {
-    retriever: string;
-    decider: string;
-    kind: 'non-ai-baseline';
-    candidateLimit: number;
-    threshold: number;
-    selection: ThresholdSelection | { rule: 'fixed-by-flag' };
+    name: string;
+    /** Never report a deterministic or lexical run as an AI result. */
+    kind: 'non-ai-baseline' | 'deterministic-test' | 'ai';
+    summary: string[];
+    details: Record<string, unknown>;
   };
   dataset: Pick<Manifest, 'datasetVersion' | 'seed' | 'counts'>;
   splits: Record<SplitName, SplitReport>;
@@ -61,7 +72,10 @@ async function retrieveSplit(requests: SyntheticRequest[], labels: Map<string, L
   return simulateRetrieval({ requests, labels }, new LexicalRetriever(index), MAX_CANDIDATES);
 }
 
-function examplesFrom(records: DecisionRecord[], requestsById: Map<string, SyntheticRequest>) {
+export function examplesFrom(
+  records: DecisionRecord[],
+  requestsById: Map<string, SyntheticRequest>,
+) {
   const describe = (r: DecisionRecord) => ({
     requestId: r.requestId,
     title: requestsById.get(r.requestId)!.title,
@@ -108,7 +122,7 @@ export async function runLexicalBaseline(inputs: Inputs): Promise<EvaluationRepo
 
   // Tune on dev only; test stays held out.
   let threshold: number;
-  let selection: EvaluationReport['matcher']['selection'];
+  let selection: ThresholdSelection | { rule: 'fixed-by-flag' };
   if (inputs.threshold !== undefined) {
     threshold = inputs.threshold;
     selection = { rule: 'fixed-by-flag' };
@@ -135,12 +149,15 @@ export async function runLexicalBaseline(inputs: Inputs): Promise<EvaluationRepo
   return {
     generatedAt: new Date().toISOString(),
     matcher: {
-      retriever: 'lexical-tfidf',
-      decider: `threshold@${threshold.toFixed(2)}`,
+      name: `lexical-tfidf + threshold@${threshold.toFixed(2)}`,
       kind: 'non-ai-baseline',
-      candidateLimit: inputs.k,
-      threshold,
-      selection,
+      summary: [
+        `Matcher: lexical-tfidf + threshold@${threshold.toFixed(2)} (NON-AI baseline), top-${inputs.k} candidates`,
+        'precisionFloorMet' in selection
+          ? `Threshold selected on dev by ${selection.rule} (precision floor ${selection.minPrecision}${selection.precisionFloorMet ? ' met' : ' NOT met'})`
+          : 'Threshold fixed by --threshold flag',
+      ],
+      details: { retriever: 'lexical-tfidf', candidateLimit: inputs.k, threshold, selection },
     },
     dataset: {
       datasetVersion: inputs.manifest.datasetVersion,

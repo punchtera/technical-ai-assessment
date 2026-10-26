@@ -1,6 +1,6 @@
 # Evaluation
 
-Status: step 1. The dataset, metrics and harness exist, and so far only a **non-AI lexical baseline** has been evaluated. The AI pipeline (embeddings + LLM assessment) plugs into the same harness in step 2.
+Status: step 2. Three matchers run through the same harness and metrics: a **non-AI lexical baseline**, the **production pipeline with the deterministic test provider** (mechanics only, not AI), and the **production pipeline with Anthropic + Voyage** (implemented, opt-in, **not yet run** because no API keys were available).
 
 ## Synthetic dataset
 
@@ -127,6 +127,53 @@ Lower thresholds, for the precision/recall tradeoff (`pnpm eval --threshold <t>`
 
 **None of the design's targets (precision ≥ 0.90 _and_ recall ≥ 0.80) are met by this baseline**, and they are not expected to be. The targets remain hypotheses for the AI pipeline. Triage time and suggestion acceptance can't be measured offline at all: they need a human review workflow or user study (step 3 onward).
 
+## Pipeline evaluation (step 2)
+
+`pnpm eval --matcher deterministic|ai` replays each split through `@fis/triage-core`'s `runTriage()`, the code the API runs, with pgvector swapped for in-memory cosine. The simulation rules match the lexical baseline: streaming in arrival order, against earlier requests, with oracle review. Some specifics:
+
+- **No label leakage into prompts.** When the simulated reviewer creates a group, its title and need statement come from that first request's own title and AI-extracted need, never from `catalog.json`. `run-pipeline.test.ts` spies on every provider input and asserts that no catalog need statement, group key or synthetic email reaches a provider.
+- **Strict decision mapping.** `link_existing` counts as a link, `create_group` as a new group, and `needs_review` as an **abstention**. A second view, "if review suggestions followed", scores `needs_review` proposals as if the reviewer accepted the suggested group, or created a new one when none was suggested.
+- **Retrieval is scored on the full ranked list** (up to 10 groups, no similarity floor). Decision metrics use the configured floor and candidate limit, 0.25 and 5 by default.
+- **Pipeline health is reported too:** proposal mix, failures by error code, invalid quotes, flags, provider calls and token usage.
+
+### Deterministic test provider, NOT AI
+
+The stand-in was improved in step 3 so it could support a convincing demo (v2: light stemming, character n-gram hashing embeddings, and an overlap assessor with match / uncertain / no-match). Its match threshold (0.5) was chosen on **dev** from {0.4, 0.5, 0.6}: 0.5 gave the best dev precision (62.5%, against 47.4% at 0.4). Test is reported unchanged. The similarity floor stays at the production default, 0.25.
+
+|                                           | v1 (step 2) dev     | v1 test             | **v2 (step 3) dev**     | **v2 test**             |
+| ----------------------------------------- | ------------------- | ------------------- | ----------------------- | ----------------------- |
+| retrieval recall@1 / @5 / @10             | 23.2 / 56.1 / 81.7% | 41.8 / 73.4 / 86.1% | **42.7 / 75.6 / 93.9%** | **62.0 / 84.8 / 93.7%** |
+| retrieval MRR                             | 0.386               | 0.551               | **0.577**               | **0.720**               |
+| decision precision / recall               | 100% / 2.4%         | 100% / 2.5%         | **62.5% / 6.1%**        | **100% / 19.0%**        |
+| false positives (within / cross family)   | 0                   | 0                   | **3 (0 / 3)**           | **0**                   |
+| proposals link / new group / needs review | 2 / 101 / 1         | 2 / 93 / 2          | 8 / 92 / 4              | 15 / 79 / 3             |
+| failed runs, invalid quotes               | 0, 0                | 0, 0                | 0, 0                    | 0, 0                    |
+
+What this shows:
+
+- The production pipeline runs end to end over all 201 requests with no failures and no quote-fidelity errors.
+- Retrieval with n-gram hashing now beats the TF-IDF baseline at recall@10.
+- Decisions remain poor, as expected from word overlap. Recall is 6–19%, and on dev precision falls below the 0.90 floor.
+
+These numbers say **nothing about AI quality**. They describe a rule-based stand-in that exists so the app, the tests and the demo run without API keys.
+
+### Anthropic + Voyage: not yet run
+
+Run it when credentials are available (paid; synthetic data only):
+
+```bash
+RUN_LIVE_AI_EVAL=1 ANTHROPIC_API_KEY=... VOYAGE_API_KEY=... pnpm eval --matcher ai --limit 20   # smoke run
+RUN_LIVE_AI_EVAL=1 ANTHROPIC_API_KEY=... VOYAGE_API_KEY=... pnpm eval --matcher ai              # full run
+```
+
+Tune only on **dev**: `--min-similarity`, `--k`, the prompts and the effort levels. Report **test** once, unchanged. Compare against the lexical baseline above. The design's targets (precision ≥ 0.90, recall ≥ 0.80) remain unvalidated hypotheses until this run exists.
+
+### Metrics that need people, not this harness
+
+- **Triage time** (M1) and **acceptance without major correction** (M3) can't be measured offline.
+- The system already records what they need: `review_decisions.matched_proposal`, triage-run `suggestion_status`, and timestamps on submission, run completion and decision.
+- A reviewer study or pilot in step 3+ is still needed to measure them.
+
 ## Limitations
 
 - Synthetic text written by one author (an AI assistant) is more uniform than real feedback and may share that author's phrasing habits.
@@ -134,3 +181,4 @@ Lower thresholds, for the precision/recall tradeoff (`pnpm eval --threshold <t>`
 - The splits are small, and the dev/test difference comes partly from which families landed in which split.
 - `alsoAcceptable` covers only the ambiguities the author anticipated; reviewers might accept other links.
 - The TF-IDF index is fitted on all texts of the split being evaluated (unsupervised, no labels). Real intake would only know past texts.
+- In the pipeline simulation, group titles and need statements come from the first member request, while real groups get a reviewer-written need statement. That may understate assessment quality.

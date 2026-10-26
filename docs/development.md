@@ -45,6 +45,8 @@ Prisma 7 reads its connection URL from `apps/api/prisma.config.ts`, which loads 
 
 The generated client goes to `apps/api/src/generated/prisma` (git-ignored).
 
+Hand-written SQL in migrations: `20…_domain_model` ends with a CHECK constraint that keeps `group_memberships.status` and `active_request_id` consistent. Prisma does not model CHECK constraints and leaves them alone in later diffs.
+
 Vector columns: Prisma has no native vector type, so they're declared as `Unsupported("vector(<dims>)")`. Queries that read or write them go through parameterised `$queryRaw` tagged templates, never string concatenation. The integration test `database.int.test.ts` shows the pattern (`embedding <=> ${query}::vector`).
 
 ## Tests
@@ -59,14 +61,26 @@ Integration tests:
 1. apply all migrations to `TEST_DATABASE_URL` (global setup), and
 2. override `DATABASE_URL` with the test database inside each worker, so development data is never touched.
 
-They cover migrations, pgvector and cosine distance with bound parameters, the embedding-space uniqueness constraint, the health endpoint, OpenAPI serving, 404/413/400 error envelopes and malformed JSON.
+They cover:
+
+- migrations, pgvector, the UTC session time zone and parameterised vector queries
+- the full workflow: submit → recommendation → approve / create group / reject / reverse, with audit history
+- retrieval through Postgres: same-space, approved members only, self excluded
+- concurrent approvals (exactly one succeeds), stale versions and invalid references
+- idempotent submission and redaction (original stored, only redacted text reaches providers)
+- duplicate-attempt prevention and lease recovery
+- provider outages with bounded retries and manual retry, and malformed model output
+- the manual-only workflow with `AI_PROVIDER=none`
 
 ## Synthetic data and evaluation
 
 ```bash
 pnpm dataset:generate    # rewrite data/synthetic/* from ground-truth/catalog.json (seed 20261025)
 pnpm dataset:validate    # fails on drift, label leakage, split leakage, unsafe PII, etc.
-pnpm eval                # writes data/evaluation/results/*.json (git-ignored) and prints a summary
+pnpm eval                          # non-AI lexical baseline
+pnpm eval --matcher deterministic  # production pipeline + labelled test provider (no keys)
+RUN_LIVE_AI_EVAL=1 pnpm eval --matcher ai [--limit 20]   # real providers (paid, opt-in)
+# results go to data/evaluation/results/*.json (git-ignored)
 ```
 
 `data/` is excluded from Prettier because the manifest stores SHA-256 hashes of the generated files. See [evaluation.md](evaluation.md).
@@ -82,7 +96,39 @@ pnpm eval                # writes data/evaluation/results/*.json (git-ignored) a
 | `API_BODY_LIMIT`    | `apps/api/.env`       | `32kb`                         | Max JSON body                                                             |
 | `VITE_API_BASE_URL` | `apps/web/.env.local` | `http://localhost:3000`        | API base URL. **Public:** every `VITE_*` value is shipped to the browser. |
 
-AI provider keys (`ANTHROPIC_API_KEY`, `VOYAGE_API_KEY`) arrive in step 2. They will be server-only and optional, and the app will run without them.
+### AI and triage variables (`apps/api/.env`)
+
+| Variable                                                                          | Default                 | Purpose                                                                                       |
+| --------------------------------------------------------------------------------- | ----------------------- | --------------------------------------------------------------------------------------------- |
+| `AI_PROVIDER`                                                                     | `none`                  | `none` (manual triage), `deterministic-test` (labelled non-AI stand-in) or `anthropic-voyage` |
+| `ANTHROPIC_API_KEY`, `VOYAGE_API_KEY`                                             | unset                   | Required only for `anthropic-voyage`. Server-side only; empty values count as unset           |
+| `ANTHROPIC_EXTRACTION_MODEL` / `ANTHROPIC_ASSESSMENT_MODEL`                       | `claude-haiku-5-5`      | Must be a verified id (`claude-haiku-5-5`, `claude-sonnet-5-5`), otherwise startup fails      |
+| `ANTHROPIC_EXTRACTION_EFFORT` / `ANTHROPIC_ASSESSMENT_EFFORT`                     | `low` / `medium`        | `output_config.effort`                                                                        |
+| `ANTHROPIC_MAX_TOKENS`                                                            | `4096`                  | Includes Haiku 5.5's adaptive thinking                                                        |
+| `VOYAGE_EMBEDDING_MODEL`                                                          | `voyage-4-lite`         | `voyage-4-lite` or `voyage-4`, always 1024 dimensions                                         |
+| `PROVIDER_TIMEOUT_MS`                                                             | `30000`                 | Per provider call                                                                             |
+| `TRIAGE_WORKER_ENABLED`                                                           | `true`                  | Background worker; tests disable it and call `drain()`                                        |
+| `TRIAGE_POLL_INTERVAL_MS` / `TRIAGE_LEASE_MS` / `TRIAGE_MAX_ATTEMPTS`             | `2000` / `120000` / `5` | Polling, abandoned-claim lease, automatic attempts                                            |
+| `RETRIEVAL_CANDIDATE_LIMIT` / `RETRIEVAL_MIN_SIMILARITY` / `RETRIEVAL_NEIGHBOURS` | `5` / `0.25` / `30`     | Groups shown to the assessor, cosine floor, member neighbours scanned                         |
+
+### Trying the workflow from the command line
+
+```bash
+# apps/api/.env: AI_PROVIDER=deterministic-test
+pnpm --filter @fis/api dev
+curl -s -XPOST localhost:3000/api/v1/requests -H 'content-type: application/json' \
+  -d '{"title":"Dark mode","description":"I work late at night and the bright UI gives me headaches."}'
+curl -s localhost:3000/api/v1/requests/<id>                     # recommendation + evidence
+curl -s -XPOST localhost:3000/api/v1/requests/<id>/decisions -H 'X-Actor: pm.ana' \
+  -H 'content-type: application/json' \
+  -d '{"action":"create_group","title":"Dark mode","needStatement":"A comfortable dark appearance for night work."}'
+```
+
+Swagger UI at http://localhost:3000/api/docs lists every route and schema.
+
+## Demo
+
+See [demo.md](demo.md): `pnpm demo:setup`, `pnpm demo:api`, `pnpm demo:seed`, `pnpm demo:reset`. These use a separate `fis_demo` database and never touch `DATABASE_URL`.
 
 ## Troubleshooting
 

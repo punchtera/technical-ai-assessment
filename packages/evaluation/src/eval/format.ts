@@ -5,18 +5,7 @@ const pct = (value: number | null) => (value === null ? 'n/a' : `${(value * 100)
 /** Human-readable summary printed by `pnpm eval`. */
 export function formatReport(report: EvaluationReport): string {
   const lines: string[] = [];
-  const m = report.matcher;
-  lines.push(
-    `Matcher: ${m.retriever} + ${m.decider} (${m.kind}), top-${m.candidateLimit} candidates`,
-  );
-  if ('precisionFloorMet' in m.selection) {
-    lines.push(
-      `Threshold selected on dev by ${m.selection.rule} (precision floor ${m.selection.minPrecision}` +
-        `${m.selection.precisionFloorMet ? ' met' : ' NOT met'})`,
-    );
-  } else {
-    lines.push('Threshold fixed by --threshold flag');
-  }
+  for (const line of report.matcher.summary) lines.push(line);
   lines.push(
     `Dataset v${report.dataset.datasetVersion}, seed ${report.dataset.seed}, ${report.dataset.counts.requests} requests`,
   );
@@ -61,6 +50,34 @@ export function formatReport(report: EvaluationReport): string {
   rows.push(['abstentions', ...both((s) => s.decision.abstentions, String)]);
   rows.push(['hard-negative subset precision', ...both((s) => s.hardNegatives.precision, pct)]);
   rows.push(['hard-negative subset recall', ...both((s) => s.hardNegatives.recall, pct)]);
+  if (report.splits.dev.pipeline || report.splits.test.pipeline) {
+    const p = (s: EvaluationReport['splits']['dev']) => s.pipeline;
+    rows.push(['— pipeline —', '', '']);
+    rows.push([
+      'proposals link / new / review',
+      ...both((s) => {
+        const a = p(s)?.proposalActions;
+        return a ? `${a.link_existing} / ${a.create_group} / ${a.needs_review}` : 'n/a';
+      }, String),
+    ]);
+    rows.push([
+      'precision if review suggestions followed',
+      ...both((s) => p(s)?.suggestionsIfFollowed.precision ?? null, pct),
+    ]);
+    rows.push([
+      'recall if review suggestions followed',
+      ...both((s) => p(s)?.suggestionsIfFollowed.recall ?? null, pct),
+    ]);
+    rows.push(['failed runs', ...both((s) => p(s)?.failures.count ?? 0, String)]);
+    rows.push([
+      'invalid quotes (extraction / assessment)',
+      ...both((s) => {
+        const q = p(s)?.invalidQuotes;
+        return q ? `${q.extraction} / ${q.assessment}` : 'n/a';
+      }, String),
+    ]);
+    rows.push(['provider calls', ...both((s) => p(s)?.providerCalls ?? 0, String)]);
+  }
   for (const tag of ['ambiguous', 'terse', 'solution_shaped', 'paraphrase', 'near_duplicate']) {
     rows.push([`recall · ${tag}`, ...both((s) => s.byTag[tag]?.recall ?? null, pct)]);
   }

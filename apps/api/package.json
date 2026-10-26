@@ -13,10 +13,15 @@
     "test:integration": "pnpm run db:generate && vitest run --config vitest.integration.config.ts",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
-    "db:migrate:deploy": "prisma migrate deploy"
+    "db:migrate:deploy": "prisma migrate deploy",
+    "demo:setup": "node scripts/demo.mjs setup",
+    "demo:reset": "node scripts/demo.mjs reset",
+    "demo:api": "node scripts/demo.mjs api",
+    "demo:seed": "node scripts/demo.mjs seed"
   },
   "dependencies": {
     "@fis/contracts": "workspace:*",
+    "@fis/triage-core": "workspace:*",
     "@nestjs/common": "11.2.8",
     "@nestjs/core": "11.2.8",
     "@nestjs/platform-express": "11.2.8",
