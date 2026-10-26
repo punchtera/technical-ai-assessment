@@ -1,0 +1,22 @@
+{
+  "name": "tasklane-synthetic-feature-requests",
+  "datasetVersion": "1.0.0",
+  "generatorVersion": "1.0.0",
+  "seed": 20261025,
+  "synthetic": true,
+  "notice": "SYNTHETIC DATA. Every request below was written for evaluation purposes and describes a fictional product (Tasklane). None of it is real customer feedback. Email addresses use reserved example domains and phone numbers use the fictional 555-01xx range.",
+  "counts": {
+    "requests": 201,
+    "groups": 40,
+    "families": 15,
+    "dev": 104,
+    "test": 97
+  },
+  "sha256": {
+    "ground-truth/catalog.json": "8c9e19012f029cd8127824e2903beecc58e77dc6440d0f5e168e9034d76acbef",
+    "requests.jsonl": "cb97bd09faa7b783b21358db32e4b204977b5e0f4c36f776f7074cb9ceea84d6",
+    "ground-truth/labels.jsonl": "f28a7b4d845afc8bbf6ef1e8ad8bab5381bc755ecec673e3182c57abc0e626c8",
+    "ground-truth/groups.json": "1e4d7d58fe05ec5b0c34a47ce125161c7c5b88eff72b545637d1f592854acd96",
+    "ground-truth/splits.json": "d67dde2ab55eba886a4f7a00fc72363beec3e98f53e23244e580ce5064842f9f"
+  }
+}

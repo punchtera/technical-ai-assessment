@@ -1,0 +1,26 @@
+# Local development infrastructure only. Credentials below are local placeholders,
+# not secrets; never reuse them outside your machine.
+services:
+  postgres:
+    # PostgreSQL 16 with the pgvector extension preinstalled.
+    image: pgvector/pgvector:pg16
+    container_name: fis-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: fis
+      POSTGRES_PASSWORD: fis_local_dev
+      POSTGRES_DB: fis
+    ports:
+      # Host port 5433 avoids clashing with a PostgreSQL already running on 5432.
+      - '5433:5432'
+    volumes:
+      - fis-pgdata:/var/lib/postgresql/data
+      - ./infra/postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U fis -d fis']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  fis-pgdata:

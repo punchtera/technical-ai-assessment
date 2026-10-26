@@ -57,3 +57,122 @@ Summary of actions:
   subsections ("Core Requirements" and "AI First Solution") verbatim, placed
   between the Project overview and Project Rules.
 - Logged this prompt in prompts.txt and committed on `dev`.
+
+================================================================================
+[2026-10-26T01:03:19Z] PROMPT #4
+--------------------------------------------------------------------------------
+Prompt:
+"Task: Define the AI-First Product Strategy and Initial Design" (attached prompt
+file). Inspect the repo and instructions, log the prompt, then create a concise,
+implementation-ready docs/product-design.md that: compares >=3 candidate
+feature-request-lifecycle use cases in a decision matrix (business value, AI
+suitability, workflow impact, feasibility, measurability, risk/oversight);
+selects one primary use case with rationale; describes the AI-first workflow
+with human intervention points, uncertainty handling and audit trail;
+recommends and justifies the simplest adequate AI architecture (verifying
+provider details); defines human oversight, 2-3 success metrics with an
+evaluation plan, MVP scope and exclusions, risks/assumptions/open questions,
+and acceptance criteria. Constraints: no application code, no scaffolding, no
+dependency installs, no fabricated results, no commit or push unless asked.
+
+Summary of actions:
+- Inspected repo (branch dev, clean tree; only CLAUDE.md and prompts.txt).
+- Checked current provider docs (Anthropic structured outputs; Voyage AI
+  embedding models) to ground the architecture recommendation.
+- Created docs/product-design.md. Selected use case: AI-assisted intake triage
+  that extracts the underlying need from each request and proposes
+  consolidation into existing "need clusters", with PM approval.
+- Did not commit (per the prompt's execution constraints).
+
+================================================================================
+[2026-10-26T01:09:55Z] PROMPT #5
+--------------------------------------------------------------------------------
+Prompt:
+"Task: Implement the AI-First Feature-Request Triage Application" (attached
+prompt file). Build a working vertical slice per docs/product-design.md:
+pnpm + Turborepo monorepo (TypeScript strict), NestJS API (versioned REST +
+OpenAPI), React + Vite web app, PostgreSQL + pgvector via Prisma, Docker
+Compose; deterministic AI pipeline (input/PII handling -> need extraction ->
+embedding retrieval -> structured candidate assessment -> human review ->
+failure handling) behind replaceable provider adapters (verify Voyage
+voyage-4-lite and Claude Haiku 5.5 identifiers, pricing, limits); synthetic
+dataset (~200 requests / ~40 groups) with isolated ground truth, validation,
+and a repeatable precision/recall evaluation; unit, integration and e2e
+tests; README + docs/architecture.md, development.md, ai-integration.md,
+evaluation.md. No commits/pushes; no real customer data; no paid API needed
+for local dev/tests.
+
+Summary of actions (completed 2026-10-26T01:44:15Z):
+- At the user's request (follow-up message 2026-10-26T01:12Z) split this
+  prompt into 3 steps: (1) foundation + synthetic data + evaluation,
+  (2) domain/API + AI pipeline, (3) UI + e2e + final verification.
+  Implemented STEP 1 only.
+- Monorepo: pnpm 10.28 workspaces + Turborepo 2.11; strict TypeScript 5.9;
+  ESLint 9 flat config (incl. rule forbidding apps from importing
+  ground-truth/evaluation code); Prettier.
+- packages/contracts: shared Zod 4 schemas (ESM + CJS builds).
+- apps/api: NestJS 11, /api/v1 URI versioning, Zod validation pipe, uniform
+  error envelope, 32kb body limit, OpenAPI 3.1 generated from contracts at
+  /api/docs, GET /api/v1/health (DB + pgvector, 503 when degraded).
+- Prisma 7.10.1 (pg driver adapter, prisma-client generator, CJS) with first
+  migration enabling pgvector + embedding_spaces table; docker-compose with
+  pgvector/pgvector:pg16 on port 5433 and a fis_test database.
+- apps/web: React 19 + Vite 7 shell with typed, schema-validated API client
+  showing live health.
+- Synthetic dataset: 201 requests / 40 groups / 15 families (fictional
+  "Tasklane"), labels isolated under data/synthetic/ground-truth, seeded
+  generation (seed 20261025), family-level dev/test split, validator.
+- Evaluation: streaming oracle-review harness, retrieval (recall@k, MRR) vs
+  decision (precision, recall, FP within/cross family, FN, abstentions,
+  per-tag, hard-negative subset) metrics; non-AI TF-IDF baseline. Measured:
+  dev P 90.0% / R 11.0%, test P 100% / R 26.6% at threshold 0.28 (targets
+  not met; baseline only).
+- Docs: README, docs/architecture.md, development.md, ai-integration.md
+  (Voyage verified; Anthropic pricing/limits still to verify), evaluation.md.
+- Verified in Claude's cloud workspace (PostgreSQL 16 + pgvector 0.8.1,
+  Prisma schema engine built from source because binaries.prisma.sh was
+  blocked): clean install, migrate deploy, generate, format:check, lint,
+  typecheck, 45 unit + 9 integration tests, build, API + web started
+  independently, dataset:validate, eval. Docker image not verified (Docker
+  Hub blocked there).
+- No commits or pushes (per the prompt).
+
+================================================================================
+[2026-10-26T01:54:39Z] PROMPT #6
+--------------------------------------------------------------------------------
+Prompt:
+"copy it in at my project" - copy the step 1 implementation into the project
+folder.
+
+Summary of actions:
+- Confirmed the folder's prompts.txt was unchanged since it was copied to the
+  cloud workspace, then copied step1.tgz in and extracted it at the project
+  root (103 files incl. prompts.txt with the PROMPT #5 summary).
+- Removed the archive. No commits or pushes.
+
+================================================================================
+[2026-10-26T02:00:30Z] PROMPT #7
+--------------------------------------------------------------------------------
+Prompt:
+Shared the terminal session from running the setup commands. Revisit and
+unlock prompts.txt so it follows the CLAUDE.md logging pattern, add the
+missing prompt entry, and validate why the setup is not running.
+
+Summary of actions:
+- prompts.txt: the in-place write failure after extracting the step 1 archive
+  was transient; the file now accepts normal appends (this entry was appended
+  in place). Log now contains PROMPT #1-#7 in order.
+- Diagnosed the failed setup from the session output:
+  1) `npm i` installed only root devDependencies with npm (npm ignores
+     pnpm-workspace.yaml), creating package-lock.json and no package
+     node_modules.
+  2) `corepack: command not found` (Node 25+ no longer bundles Corepack)
+     aborted the `corepack enable && pnpm install` chain, so pnpm install
+     never ran -> "vitest: command not found" in every package.
+  3) Docker daemon not running -> `pnpm db:up` failed.
+- Removed the npm artefacts (node_modules/, package-lock.json, .turbo/).
+- Added scripts/ensure-pnpm.mjs as the root `preinstall` script so npm/yarn
+  installs fail with clear instructions (tested: npm fails, pnpm installs).
+- Updated README.md prerequisites and docs/development.md (pnpm install
+  without corepack, Docker must be running, troubleshooting entries).
+- No commits or pushes.

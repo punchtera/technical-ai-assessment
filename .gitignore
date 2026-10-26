@@ -1,0 +1,30 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+.turbo/
+coverage/
+*.tsbuildinfo
+
+# generated Prisma client
+apps/api/src/generated/
+
+# local environment — never commit secrets
+.env
+.env.*
+!.env.example
+
+# evaluation run outputs (re-generate with `pnpm eval`)
+data/evaluation/results/
+
+# test artefacts
+playwright-report/
+test-results/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.log

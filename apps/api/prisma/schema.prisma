@@ -1,0 +1,32 @@
+// Prisma schema for the Feature Intelligence System.
+//
+// Step 1 (foundation) enables the pgvector extension and adds the registry of
+// embedding configurations that vector columns will reference.
+// Domain models (feature requests, need groups, memberships, triage results,
+// review decisions, audit events, embeddings) are added in step 2.
+
+generator client {
+  provider        = "prisma-client"
+  output          = "../src/generated/prisma"
+  moduleFormat    = "cjs"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  extensions = [vector]
+}
+
+/// Records the embedding configurations the database has been prepared for.
+/// Vector columns are typed by dimension, so the model identifier and its
+/// dimension are stored explicitly to stop incompatible embeddings from mixing.
+model EmbeddingSpace {
+  id         String   @id
+  provider   String
+  model      String
+  dimensions Int
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@unique([provider, model, dimensions])
+  @@map("embedding_spaces")
+}

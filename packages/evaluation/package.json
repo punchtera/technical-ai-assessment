@@ -1,0 +1,23 @@
+{
+  "name": "@fis/evaluation",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Dev-only synthetic dataset tooling and offline matching evaluation. Never imported by the apps.",
+  "scripts": {
+    "dataset:generate": "tsx src/cli/generate-dataset.ts",
+    "dataset:validate": "tsx src/cli/validate-dataset.ts",
+    "eval": "tsx src/cli/run-eval.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "lint": "eslint .",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "tsx": "4.23.15",
+    "vitest": "3.2.7"
+  }
+}
