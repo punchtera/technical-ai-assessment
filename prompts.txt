@@ -306,7 +306,7 @@ Summary of actions:
 --------------------------------------------------------------------------------
 Prompt:
 "add this remote git remote add origin git@github.com:punchtera/technical-ai-assessment.git,
-push the current repo and then create a pr from dev into main to release everythin"
+push the current repo and then create a pr from dev into main to release everything"
 
 Summary of actions:
 - Added the origin remote.
